@@ -1,8 +1,8 @@
-/* globals Image */
+/* globals Image, Player, StatBlock */
 
 console.log('Hello World');
 
-let canvas, context;
+let canvas, context, player;
 
 function initialize () {
   let tile = new Image();
@@ -25,4 +25,11 @@ function initialize () {
   };
 }
 
+function startGame () {
+  player = new Player();
+  player.addStats(new StatBlock(20));
+  player.stats.takeDamage(5);
+}
+
 initialize();
+startGame();
