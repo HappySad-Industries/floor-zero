@@ -1,10 +1,7 @@
 // the creature class
 
-class Creature {
+class Creature { // eslint-disable-line no-unused-vars
   constructor () {
     this.name = 'Nameless';
   }
 }
-
-var creat = new Creature();
-console.log(creat.name); // literally just bc otherwise Creature is marked as 'unused'
