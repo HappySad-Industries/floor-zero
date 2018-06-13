@@ -1,4 +1,4 @@
-/* globals Player, StatBlock, render */
+/* globals Player, Enemy, StatBlock, render */
 
 console.log('Main.js loaded');
 
@@ -23,8 +23,10 @@ function startGame () {
 
   player = new Player();
   player.addStats(new StatBlock(20));
-  player.stats.takeDamage(5);
   creatures.push(player);
+  player.stats.takeDamage(5);
+
+  creatures.push(Enemy.new(5));
 }
 
 initialize();
