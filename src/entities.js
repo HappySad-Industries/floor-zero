@@ -29,3 +29,11 @@ class Player extends Creature { // eslint-disable-line no-unused-vars
     this.sprite = 'friend.png';
   }
 }
+
+// The enemy class
+class Enemy extends Creature { // eslint-disable-line no-unused-vars
+  constructor () {
+    super();
+    this.name = 'Villain';
+  }
+}
