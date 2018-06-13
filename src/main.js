@@ -5,8 +5,8 @@ console.log('Main.js loaded');
 let canvas, context, creatures, player; // eslint-disable-line no-unused-vars
 let takingAction = false;
 
-const CANVAS_WIDTH = 800;
-const CANVAS_HEIGHT = 500;
+const CANVAS_WIDTH = 832;
+const CANVAS_HEIGHT = 512;
 
 function initialize () {
   canvas = document.getElementById('canvas');
