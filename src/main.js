@@ -1,19 +1,21 @@
 /* globals Image, Player, StatBlock */
 
-console.log('Hello World');
+console.log('Main.js loaded');
 
 let canvas, context, player;
 
-function initialize () {
+const CANVAS_WIDTH = 800;
+const CANVAS_HEIGHT = 500;
+
+function initialize () { // eslint-disable-line no-unused-vars
   let tile = new Image();
   tile.src = 'assets/sprites/tile.png';
 
   canvas = document.getElementById('canvas');
   context = canvas.getContext('2d');
 
-  canvas.width = 800;
-  canvas.height = 500;
-  canvas.style.backgroundColor = 'black';
+  canvas.width = CANVAS_WIDTH;
+  canvas.height = CANVAS_HEIGHT;
 
   let container = document.getElementById('container');
   container.style.textAlign = 'center';
