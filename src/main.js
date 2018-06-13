@@ -15,6 +15,9 @@ function initialize () {
   canvas.height = 500;
   canvas.style.backgroundColor = 'black';
 
+  var container = document.getElementById('container');
+  container.style.textAlign = 'center';
+
   tile.onload = event => {
     let pattern = context.createPattern(tile, 'repeat');
     context.fillStyle = pattern;
