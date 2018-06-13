@@ -1,12 +1,12 @@
-/* globals Player, Enemy, StatBlock, render, loadSprites */
+/* globals Player, Enemy, StatBlock, render, loadSprites, renderUI */
 
 console.log('Main.js loaded');
 
 let canvas, context, creatures, player; // eslint-disable-line no-unused-vars
 let takingAction = false;
 
-const CANVAS_WIDTH = 832;
-const CANVAS_HEIGHT = 512;
+const CANVAS_WIDTH = (13 * 64) + 2; // 836
+const CANVAS_HEIGHT = (448 + 64) + 4; // 516
 
 function initialize () {
   canvas = document.getElementById('canvas');
@@ -49,4 +49,8 @@ function update (sprites) {
 initialize();
 startGame();
 
-loadSprites().then((sprites) => { setInterval(update, 1000, sprites); });
+renderUI().then(() => {
+  loadSprites().then((sprites) => {
+    setInterval(update, 1000, sprites);
+  });
+});
