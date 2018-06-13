@@ -1,2 +1,2 @@
 # floor-zero
-An endless climb up and endless tower
+An endless climb up an endless tower
