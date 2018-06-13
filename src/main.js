@@ -29,6 +29,12 @@ function startGame () {
   creatures.push(new Enemy().addStats(new StatBlock(5)).moveTo(300, 100));
 }
 
+function update () {
+  render();
+}
+
 initialize();
 startGame();
 render();
+
+setInterval(update, 1000);
