@@ -26,6 +26,7 @@ class Creature { // eslint-disable-line no-unused-vars
       // e.g. `creature.moveTo(10, 50)`
       this.position = {x: arguments[0], y: arguments[1]};
     }
+    return this;
   }
 }
 

@@ -26,7 +26,7 @@ function startGame () {
   creatures.push(player);
   player.stats.takeDamage(5);
 
-  creatures.push(new Enemy().addStats(new StatBlock(5)));
+  creatures.push(new Enemy().addStats(new StatBlock(5)).moveTo(300, 100));
 }
 
 initialize();
