@@ -8,6 +8,7 @@ function initialize () {
   canvas.width = 800;
   canvas.height = 500;
   canvas.style.backgroundColor = "black";
+  canvas.style.textAlign = "center";
 }
 
 initialize();
