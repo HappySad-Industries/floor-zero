@@ -7,6 +7,6 @@ h1 {
   font-size: 30pt;
 }
 
-#canvas { /* rude linter */
+canvas { /* rude linter */
   color: black;
 }
