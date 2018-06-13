@@ -2,11 +2,19 @@
 
 // Entities
 
-// The creature base class
-class Creature { // eslint-disable-line no-unused-vars
+// Entity base class, used for anything with physical presence in combat
+class Entity { // eslint-disable-line no-unused-vars
   constructor () {
-    this.name = 'Nameless';
     this.position = new Vector(0, 0);
+    this.velocity = new Vector(0, 0); // Generally sticks to 0 except for animations (e.g. arrow flying)
+  }
+}
+
+// The creature base class
+class Creature extends Entity { // eslint-disable-line no-unused-vars
+  constructor () {
+    super();
+    this.name = 'Nameless';
     this.addStats(new StatBlock(20));
     this.sprite = 'baddie.png';
     this.alignment = 'Neutral';

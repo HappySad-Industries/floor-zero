@@ -8,6 +8,10 @@ class Vector { // eslint-disable-line no-unused-vars
 
   // INSTANCE functions
 
+  clone () {
+    return new Vector(this.x, this.y);
+  }
+
   distance (other) { // calculates the distance to another vector
     return Math.sqrt(Math.pow(other.x - this.x, 2) + Math.pow(other.y - this.y, 2));
     // looks fancy but it's just the pythagorean theorem
