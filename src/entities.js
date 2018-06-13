@@ -8,6 +8,7 @@ class Creature { // eslint-disable-line no-unused-vars
     this.name = 'Nameless';
     this.position = new Vector(0, 0);
     this.sprite = 'baddie.png';
+    this.alignment = 'Neutral';
   }
 
   addStats (stats) {
@@ -33,6 +34,7 @@ class Player extends Creature { // eslint-disable-line no-unused-vars
     super();
     this.name = 'Player';
     this.sprite = 'friend.png';
+    this.alignment = 'Ally';
   }
 }
 
@@ -41,6 +43,7 @@ class Enemy extends Creature { // eslint-disable-line no-unused-vars
   constructor () {
     super();
     this.name = 'Villain';
+    this.alignment = 'Enemy';
   }
 
   static new (hp) {
