@@ -1,16 +1,13 @@
-/* globals Image, Player, StatBlock */
+/* globals Player, StatBlock, render */
 
 console.log('Main.js loaded');
 
-let canvas, context, player;
+let canvas, context, creatures, player; // eslint-disable-line no-unused-vars
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 500;
 
-function initialize () { // eslint-disable-line no-unused-vars
-  let tile = new Image();
-  tile.src = 'assets/sprites/tile.png';
-
+function initialize () {
   canvas = document.getElementById('canvas');
   context = canvas.getContext('2d');
 
@@ -19,19 +16,17 @@ function initialize () { // eslint-disable-line no-unused-vars
 
   let container = document.getElementById('container');
   container.style.textAlign = 'center';
-
-  tile.onload = event => {
-    let pattern = context.createPattern(tile, 'repeat');
-    context.fillStyle = pattern;
-    context.fillRect(0, 0, canvas.width, canvas.height);
-  };
 }
 
 function startGame () {
+  creatures = []; // Array of the creatures in the game, including the player
+
   player = new Player();
   player.addStats(new StatBlock(20));
   player.stats.takeDamage(5);
+  creatures.push(player);
 }
 
 initialize();
 startGame();
+render();
