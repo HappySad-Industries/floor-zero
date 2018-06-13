@@ -3,6 +3,7 @@
 console.log('Main.js loaded');
 
 let canvas, context, creatures, player; // eslint-disable-line no-unused-vars
+let takingAction = false;
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 500;
@@ -31,6 +32,17 @@ function startGame () {
 }
 
 function update (sprites) {
+  if (!takingAction) {
+    for (let i in creatures) {
+      creatures[i].actionTimer -= creatures[i].stats.getStat('initiative');
+      if (creatures[i].actionTimer <= 0) {
+        creatures[i].actionTimer += creatures[i].maxActionTimer;
+        takingAction = creatures[i];
+        console.log(`It is now ${creatures[i].name}'s action.`);
+        break;
+      }
+    }
+  }
   render(sprites);
 }
 
