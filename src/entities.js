@@ -12,6 +12,7 @@ class Creature { // eslint-disable-line no-unused-vars
 
   addStats (stats) {
     stats.assign(this);
+    return this;
   }
 
   moveTo () {
@@ -41,11 +42,5 @@ class Enemy extends Creature { // eslint-disable-line no-unused-vars
   constructor () {
     super();
     this.name = 'Villain';
-  }
-
-  static new (hp) {
-    let enemy = new Enemy();
-    enemy.addStats(new StatBlock(hp));
-    return enemy;
   }
 }
