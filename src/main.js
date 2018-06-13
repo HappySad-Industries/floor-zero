@@ -1,5 +1,5 @@
 
-console.log('hello world');
+console.log('Hello World');
 
 var canvas;
 
