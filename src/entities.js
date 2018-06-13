@@ -14,8 +14,12 @@ class Creature { // eslint-disable-line no-unused-vars
 
   moveTo () {
     if (arguments.length === 1) {
+      // Only one argument is specified, an object {x: x, y: y}
+      // e.g. `creature.moveTo({x: 10, y: 50})`
       this.position = arguments[0];
     } else {
+      // Two arguments specified, an x and a y
+      // e.g. `creature.moveTo(10, 50)`
       this.position = {x: arguments[0], y: arguments[1]};
     }
   }
