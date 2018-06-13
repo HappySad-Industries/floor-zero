@@ -1,23 +1,45 @@
 /* globals canvas, context, Image, creatures */
 
-function render () { // eslint-disable-line no-unused-vars
+function render (sprites) { // eslint-disable-line no-unused-vars
   console.log('Rendering started');
 
-  let tile = new Image();
-  tile.src = 'assets/sprites/tile.png';
-  tile.onload = event => {
-    let pattern = context.createPattern(tile, 'repeat');
-    context.fillStyle = pattern;
-    context.fillRect(0, 0, canvas.width, canvas.height);
-  };
+  context.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+
+  let pattern = context.createPattern(sprites.find(sprite => sprite.name === 'tile.png').sprite, 'repeat');
+  context.fillStyle = pattern;
+  context.fillRect(0, 0, canvas.width, canvas.height);
 
   for (let i = 0; i < creatures.length; i++) {
     let creature = creatures[i];
 
-    let sprite = new Image();
-    sprite.src = 'assets/sprites/' + creature.sprite;
-    sprite.onload = () => {
-      context.drawImage(sprite, creature.position.x, creature.position.y);
-    };
+    if (sprites.find(sprite => sprite.name === creature.sprite)) {
+      // console.log(`Sprite ${creature.sprite} is loaded`);
+      context.drawImage(sprites.find(sprite => sprite.name === creature.sprite).sprite, creature.position.x, creature.position.y);
+    } else {
+      throw new Error(`Sprite ${creature.sprite} isn't loaded!`);
+    }
   }
+}
+
+function loadSprites () { // eslint-disable-line no-unused-vars
+  let sprites = []; // {name, sprite}
+
+  return new Promise((resolve, reject) => {
+    let loaded = 0;
+    let toLoad = ['tile.png', 'baddie.png', 'friend.png'];
+    toLoad.forEach(name => {
+      let sprite = new Image();
+      sprite.src = 'assets/sprites/' + name;
+      sprite.onload = () => {
+        sprites.push({name: name, sprite: sprite});
+        loaded++;
+        console.log(loaded);
+
+        if (loaded === toLoad.length) {
+          console.log('All sprites loaded!');
+          resolve(sprites);
+        }
+      };
+    });
+  });
 }

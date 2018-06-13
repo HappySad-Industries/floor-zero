@@ -1,4 +1,4 @@
-/* globals Player, Enemy, StatBlock, render */
+/* globals Player, Enemy, StatBlock, render, loadSprites */
 
 console.log('Main.js loaded');
 
@@ -27,14 +27,14 @@ function startGame () {
   player.stats.takeDamage(5);
 
   creatures.push(new Enemy().addStats(new StatBlock(5)).moveTo(300, 100));
+  creatures.push(new Enemy().addStats(new StatBlock(5)).moveTo(500, 100));
 }
 
-function update () {
-  render();
+function update (sprites) {
+  render(sprites);
 }
 
 initialize();
 startGame();
-render();
 
-setInterval(update, 1000);
+loadSprites().then((sprites) => { setInterval(update, 1000, sprites); });
