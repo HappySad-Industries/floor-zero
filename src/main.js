@@ -6,7 +6,7 @@ let canvas, context;
 
 function initialize () {
   let tile = new Image();
-  tile.src = 'assets/tile.png';
+  tile.src = 'assets/sprites/tile.png';
 
   canvas = document.getElementById('canvas');
   context = canvas.getContext('2d');
