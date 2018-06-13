@@ -1,4 +1,4 @@
-/* globals StatBlock, Vector */
+/* globals Vector */
 
 // Entities
 
