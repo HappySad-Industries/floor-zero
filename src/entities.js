@@ -7,12 +7,10 @@ class Creature { // eslint-disable-line no-unused-vars
   }
 }
 
-class Player extends Creature {
+// The player class
+class Player extends Creature { // eslint-disable-line no-unused-vars
   constructor () {
     super();
     this.name = 'Player';
   }
 }
-
-var creat = new Player();
-console.log(creat.name); // literally just bc otherwise Creature is marked as 'unused'
