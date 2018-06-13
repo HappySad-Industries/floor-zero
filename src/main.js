@@ -1,6 +1,6 @@
 /* globals Image */
 
-console.log('hello world');
+console.log('Hello World');
 
 let canvas, context;
 
