@@ -1,4 +1,4 @@
-/* globals Vector */
+/* globals StatBlock, Vector */
 
 // Entities
 
@@ -7,8 +7,11 @@ class Creature { // eslint-disable-line no-unused-vars
   constructor () {
     this.name = 'Nameless';
     this.position = new Vector(0, 0);
+    this.addStats(new StatBlock(20));
     this.sprite = 'baddie.png';
     this.alignment = 'Neutral';
+    this.maxActionTimer = 100;
+    this.actionTimer = this.maxActionTimer;
   }
 
   addStats (stats) {
