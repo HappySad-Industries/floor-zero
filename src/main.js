@@ -74,7 +74,7 @@ loadUI().then((uiSprites) => {
 
 function executeClick () {
   if (cursor.y < CANVAS_HEIGHT - 64 - 2) {
-    player.moveTo(cursor.clone());
+    if (takingAction === player) player.moveTo(cursor.clone());
   } else {
     uiClicked = true;
   }
