@@ -2,6 +2,8 @@
 
 console.log('Main.js loaded');
 
+let debug = false;
+
 let canvas, cursor, context, creatures, player, uiClicked; // eslint-disable-line no-unused-vars
 let takingAction = false;
 
@@ -9,6 +11,8 @@ const CANVAS_WIDTH = (13 * 64) + 2; // 834
 const CANVAS_HEIGHT = (448 + 64) + 4; // 516
 
 function initialize () {
+  if (debug) console.log('Initializing game');
+
   canvas = document.getElementById('canvas');
   context = canvas.getContext('2d');
 

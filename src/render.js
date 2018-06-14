@@ -1,7 +1,7 @@
-/* globals CANVAS_HEIGHT, CANVAS_WIDTH, canvas, context, cursor, Image, creatures, uiClicked */
+/* globals CANVAS_HEIGHT, CANVAS_WIDTH, canvas, context, cursor, debug, Image, creatures, uiClicked */
 
 function render (sprites) { // eslint-disable-line no-unused-vars
-  console.log('Rendering started');
+  if (debug) console.log('Rendering started');
 
   context.clearRect(0 + 2, 0 + 2, canvas.width - 4, canvas.height - 64 - 2); // Clear the canvas
 
@@ -34,10 +34,10 @@ function loadSprites () { // eslint-disable-line no-unused-vars
       sprite.onload = () => {
         sprites.push({name: name, sprite: sprite});
         loaded++;
-        console.log(loaded);
+        if (debug) console.log(loaded);
 
         if (loaded === toLoad.length) {
-          console.log('All sprites loaded!');
+          if (debug) console.log('All sprites loaded!');
           resolve(sprites);
         }
       };
@@ -46,9 +46,9 @@ function loadSprites () { // eslint-disable-line no-unused-vars
 }
 
 function loadUI () { // eslint-disable-line no-unused-vars
-  console.log('Loading sprites1');
+  if (debug) console.log('Loading sprites1');
   return new Promise((resolve, reject) => {
-    console.log('Loading sprites');
+    if (debug) console.log('Loading sprites');
     let sprites = []; // {name, sprite}
 
     new Promise((resolve, reject) => {
@@ -60,10 +60,10 @@ function loadUI () { // eslint-disable-line no-unused-vars
         sprite.onload = () => {
           sprites.push({name: name, sprite: sprite});
           loaded++;
-          console.log(loaded);
+          if (debug) console.log(loaded);
 
           if (loaded === toLoad.length) {
-            console.log('All ui sprites loaded!');
+            if (debug) console.log('All ui sprites loaded!');
             resolve(sprites);
           }
         };
@@ -74,7 +74,7 @@ function loadUI () { // eslint-disable-line no-unused-vars
 }
 
 function renderUI (sprites) { // eslint-disable-line no-unused-vars
-  console.log('UI sprites loaded, rendering UI');
+  if (debug) console.log('UI sprites loaded, rendering UI');
   const UI_TOP = CANVAS_HEIGHT - 64;
   const UI_LEFT = 1;
 
@@ -88,7 +88,7 @@ function renderUI (sprites) { // eslint-disable-line no-unused-vars
     if (i === 0) {
       sprite = sprites.find(sprite => sprite.name === `ui-tile-${hover}move.png`).sprite;
     } else if (i > 0 && i < 10) {
-      console.log(`ui-tile-${hover}${i}.png`);
+      // console.log(`ui-tile-${hover}${i}.png`);
       sprite = sprites.find(sprite => sprite.name === `ui-tile-${hover}${i}.png`).sprite;
     } else if (i === 10) {
       sprite = sprites.find(sprite => sprite.name === `ui-tile-${hover}arrows.png`).sprite;
