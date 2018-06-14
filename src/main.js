@@ -64,7 +64,7 @@ startGame();
 
 loadUI().then((uiSprites) => {
   loadSprites().then((sprites) => {
-    setInterval(update, 10, sprites, uiSprites);
+    setInterval(update, 100, sprites, uiSprites);
   });
 });
 
