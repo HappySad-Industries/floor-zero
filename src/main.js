@@ -1,8 +1,8 @@
-/* globals Player, Enemy, StatBlock, render, loadSprites, renderUI, Vector */
+/* globals Player, Enemy, StatBlock, render, loadSprites, loadUI, renderUI, Vector */
 
 console.log('Main.js loaded');
 
-let canvas, cursor, context, creatures, player; // eslint-disable-line no-unused-vars
+let canvas, cursor, context, creatures, player, uiClicked; // eslint-disable-line no-unused-vars
 let takingAction = false;
 
 const CANVAS_WIDTH = (13 * 64) + 2; // 834
@@ -43,7 +43,7 @@ function startGame () {
   creatures.push(new Enemy().addStats(new StatBlock(5)).moveTo(500, 100));
 }
 
-function update (sprites) {
+function update (sprites, uiSprites) {
   if (!takingAction) {
     for (let i in creatures) {
       creatures[i].actionTimer -= creatures[i].stats.getStat('initiative');
@@ -56,20 +56,23 @@ function update (sprites) {
     }
   }
   render(sprites);
+  renderUI(uiSprites);
 }
 
 initialize();
 startGame();
 
-renderUI().then(() => {
+loadUI().then((uiSprites) => {
   loadSprites().then((sprites) => {
-    setInterval(update, 1000, sprites);
+    setInterval(update, 10, sprites, uiSprites);
   });
 });
 
 function executeClick () {
   if (cursor.y < CANVAS_HEIGHT - 64 - 2) {
     player.moveTo(cursor.clone());
+  } else {
+    uiClicked = true;
   }
   return true;
 }
