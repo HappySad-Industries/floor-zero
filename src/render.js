@@ -14,7 +14,8 @@ function render (sprites) { // eslint-disable-line no-unused-vars
 
     if (sprites.find(sprite => sprite.name === creature.sprite)) {
       // console.log(`Sprite ${creature.sprite} is loaded`);
-      context.drawImage(sprites.find(sprite => sprite.name === creature.sprite).sprite, creature.position.x, creature.position.y);
+      let sprite = sprites.find(sprite => sprite.name === creature.sprite).sprite;
+      context.drawImage(sprite, creature.position.x - sprite.width / 2, creature.position.y - sprite.height / 2);
     } else {
       throw new Error(`Sprite ${creature.sprite} isn't loaded!`);
     }
