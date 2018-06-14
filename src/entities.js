@@ -1,4 +1,4 @@
-/* globals StatBlock, Vector */
+/* globals StatBlock, Vector, Spellbook */
 
 // Entities
 
@@ -25,6 +25,14 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
   addStats (stats) {
     stats.assign(this);
     return this;
+  }
+
+  addSpellbook (spells) {
+    if (spells instanceof Spellbook) {
+      spells.assign(this);
+    } else {
+      (new Spellbook(spells)).assign(this);
+    }
   }
 
   moveTo () {

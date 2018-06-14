@@ -30,6 +30,10 @@ class StatBlock { // eslint-disable-line no-unused-vars
     return this['base' + upper];
   }
 
+  getResource (resource) {
+    return this.getStat(resource) - this[resource + 'Spent'];
+  }
+
   maxHp () {
     return this.getStat('maxHp');
   }
@@ -46,8 +50,17 @@ class StatBlock { // eslint-disable-line no-unused-vars
 
   // events
 
+  spendResource (resource, amount) {
+    if (resource !== 'hp') {
+      this[resource + 'Spent'] += amount;
+      console.log(`${this.entity.name} spent ${amount} ${resource} (Reduced to ${this.getResource(resource)})`);
+    } else {
+      this['damageTaken'] += amount;
+    }
+  }
+
   takeDamage (dmg) {
-    this.damageTaken += dmg;
+    this.spendResource('hp', dmg);
     console.log(`Damage taken by ${this.entity.name}: ${dmg} (Reduced to ${this.hp()} HP)`); // for debugging
   }
 }
