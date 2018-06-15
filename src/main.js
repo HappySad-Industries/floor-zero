@@ -1,5 +1,8 @@
 /* globals Player, Enemy, StatBlock, render, loadSprites, loadUI, renderUI, renderMovement, Vector */
 
+// Ability list
+/* globals Fireball */
+
 console.log('Main.js loaded');
 
 let debug = false;
@@ -45,6 +48,7 @@ function startGame () {
   player.addStats(new StatBlock(20));
   creatures.push(player);
   player.stats.takeDamage(5);
+  player.addSpellbook([new Fireball()]);
 
   creatures.push(new Enemy().addStats(new StatBlock(5)).moveTo(300, 100));
   creatures.push(new Enemy().addStats(new StatBlock(5)).moveTo(500, 100));
