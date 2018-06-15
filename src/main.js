@@ -1,14 +1,17 @@
-/* globals Player, Enemy, StatBlock, render, loadSprites, loadUI, renderUI, Vector */
+/* globals Player, Enemy, StatBlock, render, loadSprites, loadUI, renderUI, renderMovement, Vector */
 
 console.log('Main.js loaded');
 
 let debug = false;
-
+let lastRenderUpdate = Date.now();
+let lastLogicUpdate = Date.now();
 let canvas, cursor, context, creatures, player, uiClicked; // eslint-disable-line no-unused-vars
 let takingAction = false;
 
 const CANVAS_WIDTH = (13 * 64) + 2; // 834
 const CANVAS_HEIGHT = (448 + 64) + 4; // 516
+let fps = 1000;
+let ups = 10;
 
 function initialize () {
   if (debug) console.log('Initializing game');
@@ -47,7 +50,11 @@ function startGame () {
   creatures.push(new Enemy().addStats(new StatBlock(5)).moveTo(500, 100));
 }
 
-function update (sprites, uiSprites) {
+function logicUpdate () {
+  let now = Date.now();
+  let dt = now - lastLogicUpdate;
+  lastLogicUpdate = now;
+
   if (!takingAction) {
     for (let i in creatures) {
       creatures[i].actionTimer -= creatures[i].stats.getStat('initiative');
@@ -58,9 +65,19 @@ function update (sprites, uiSprites) {
         break;
       }
     }
+  } else {
+
   }
+}
+
+function renderUpdate (sprites, uiSprites) {
+  let now = Date.now();
+  let dt = now - lastRenderUpdate;
+  lastRenderUpdate = now;
+
   render(sprites);
   renderUI(uiSprites);
+  if (takingAction && takingAction.moveTarget) renderMovement(dt, takingAction);
 }
 
 initialize();
@@ -68,13 +85,15 @@ startGame();
 
 loadUI().then((uiSprites) => {
   loadSprites().then((sprites) => {
-    setInterval(update, 100, sprites, uiSprites);
+    setInterval(renderUpdate, 1000 / fps, sprites, uiSprites);
   });
 });
 
+setInterval(logicUpdate, 1000 / ups);
+
 function executeClick () {
   if (cursor.y < CANVAS_HEIGHT - 64 - 2) {
-    if (takingAction === player) player.moveTo(cursor.clone());
+    if (takingAction === player && !player.moveTarget) player.move(cursor.clone());
   } else {
     uiClicked = true;
   }
