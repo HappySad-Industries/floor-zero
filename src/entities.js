@@ -59,7 +59,7 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
         let moveDir = this.position.to(target).unit(maxMovement);
         this.moveTarget = this.position.add(moveDir);
       } else {
-        this.moveTarget = this.position.to(target);
+        this.moveTarget = target;
       }
     }
   }
