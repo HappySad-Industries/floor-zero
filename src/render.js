@@ -1,9 +1,9 @@
-/* globals CANVAS_HEIGHT, CANVAS_WIDTH, canvas, context, cursor, debug, Image, creatures, uiClicked, fps */
+/* globals CANVAS_HEIGHT, CANVAS_WIDTH, canvas, context, cursor, clicking, debug, Image, creatures */
 
 function render (sprites) { // eslint-disable-line no-unused-vars
   if (debug) console.log('Rendering started');
 
-  context.clearRect(0 + 2, 0 + 2, canvas.width - 4, canvas.height - 64 - 2); // Clear the canvas
+  context.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
 
   let pattern = context.createPattern(sprites.find(sprite => sprite.name === 'tile.png').sprite, 'repeat');
   context.fillStyle = pattern;
@@ -69,7 +69,7 @@ function loadUI () { // eslint-disable-line no-unused-vars
 
     new Promise((resolve, reject) => {
       let loaded = 0;
-      let toLoad = ['ui-tile-1.png', 'ui-tile-2.png', 'ui-tile-3.png', 'ui-tile-4.png', 'ui-tile-5.png', 'ui-tile-6.png', 'ui-tile-7.png', 'ui-tile-8.png', 'ui-tile-9.png', 'ui-tile-arrows.png', 'ui-tile-pause.png', 'ui-tile-empty.png', 'ui-tile-move.png', 'ui-tile-spells.png', 'ui-tile-hover-1.png', 'ui-tile-hover-2.png', 'ui-tile-hover-3.png', 'ui-tile-hover-4.png', 'ui-tile-hover-5.png', 'ui-tile-hover-6.png', 'ui-tile-hover-7.png', 'ui-tile-hover-8.png', 'ui-tile-hover-9.png', 'ui-tile-hover-arrows.png', 'ui-tile-hover-pause.png', 'ui-tile-active-1.png', 'ui-tile-active-2.png', 'ui-tile-active-3.png', 'ui-tile-active-4.png', 'ui-tile-active-5.png', 'ui-tile-active-6.png', 'ui-tile-active-7.png', 'ui-tile-active-8.png', 'ui-tile-active-9.png', 'ui-tile-active-arrows.png', 'ui-tile-active-pause.png', 'ui-tile-active-move.png', 'ui-tile-active-spells.png', 'ui-tile-hover-move.png', 'ui-tile-hover-spells.png', 'border-side.png', 'border-toppom.png', 'ui-divider.png'];
+      let toLoad = ['ui-tile-1.png', 'ui-tile-2.png', 'ui-tile-3.png', 'ui-tile-4.png', 'ui-tile-5.png', 'ui-tile-6.png', 'ui-tile-7.png', 'ui-tile-8.png', 'ui-tile-9.png', 'ui-tile-arrows.png', 'ui-tile-pause.png', 'ui-tile-empty.png', 'ui-tile-move.png', 'ui-tile-spells.png', 'ui-tile-outline.png', 'ui-tile-outline-dark.png', 'ui-tile-background.png', 'ui-tile-background-dark.png', 'ui-tile-active-move.png', 'ui-tile-hover-move.png', 'border-side.png', 'border-toppom.png', 'ui-divider.png'];
       toLoad.forEach(name => {
         let sprite = new Image();
         sprite.src = 'assets/sprites/' + name;
@@ -96,26 +96,44 @@ function renderUI (sprites) { // eslint-disable-line no-unused-vars
 
   for (let i = 0; i < 13; i++) {
     let sprite;
-    let hover = '';
-    if (cursor.y > UI_TOP) {
-      hover = cursor.x > UI_LEFT + i * 64 && cursor.x < UI_LEFT + i * 64 + 64 ? 'hover-' : '';
-    }
-    if (cursor.y > UI_TOP && (cursor.x > UI_LEFT + i * 64 && cursor.x < UI_LEFT + i * 64 + 64) && uiClicked) hover = 'active-';
+
+    // The move icon is special
     if (i === 0) {
-      sprite = sprites.find(sprite => sprite.name === `ui-tile-${hover}move.png`).sprite;
-    } else if (i > 0 && i < 10) {
-      // console.log(`ui-tile-${hover}${i}.png`);
-      sprite = sprites.find(sprite => sprite.name === `ui-tile-${hover}${i}.png`).sprite;
-    } else if (i === 10) {
-      sprite = sprites.find(sprite => sprite.name === `ui-tile-${hover}arrows.png`).sprite;
-    } else if (i === 11) {
-      sprite = sprites.find(sprite => sprite.name === `ui-tile-${hover}spells.png`).sprite;
-    } else if (i === 12) {
-      sprite = sprites.find(sprite => sprite.name === `ui-tile-${hover}pause.png`).sprite;
-    } else {
-      sprite = sprites.find(sprite => sprite.name === `ui-tile-${hover}empty.png`).sprite;
+      sprite = sprites.find(sprite => sprite.name === `ui-tile-move.png`).sprite;
+      context.drawImage(sprite, UI_LEFT + i * 64, UI_TOP);
     }
-    context.drawImage(sprite, UI_LEFT + i * 64, UI_TOP);
+
+    // Background and outline
+    if (i !== 0) context.drawImage(sprites.find(sprite => sprite.name === `ui-tile-background.png`).sprite, UI_LEFT + i * 64, UI_TOP);
+    if (cursor.y > UI_TOP && (cursor.x > UI_LEFT + i * 64 && cursor.x < UI_LEFT + i * 64 + 64)) {
+      if (i !== 0) {
+        context.drawImage(sprites.find(sprite => sprite.name === `ui-tile-outline-dark.png`).sprite, UI_LEFT + i * 64, UI_TOP);
+        if (clicking) context.drawImage(sprites.find(sprite => sprite.name === `ui-tile-background-dark.png`).sprite, UI_LEFT + i * 64, UI_TOP);
+      } else {
+        context.drawImage(sprites.find(sprite => sprite.name === `ui-tile-hover-move.png`).sprite, UI_LEFT + i * 64, UI_TOP);
+        if (clicking) context.drawImage(sprites.find(sprite => sprite.name === `ui-tile-active-move.png`).sprite, UI_LEFT + i * 64, UI_TOP);
+      }
+    } else {
+      if (i !== 0) context.drawImage(sprites.find(sprite => sprite.name === `ui-tile-outline.png`).sprite, UI_LEFT + i * 64, UI_TOP);
+    }
+
+    // Icon
+    if (i > 0 && i < 10) {
+      // console.log(`ui-tile-${hover}${i}.png`);
+      sprite = sprites.find(sprite => sprite.name === `ui-tile-${i}.png`).sprite;
+      context.drawImage(sprite, UI_LEFT + i * 64, UI_TOP);
+    } else if (i === 10) {
+      sprite = sprites.find(sprite => sprite.name === `ui-tile-arrows.png`).sprite;
+      context.drawImage(sprite, UI_LEFT + i * 64, UI_TOP);
+    } else if (i === 11) {
+      sprite = sprites.find(sprite => sprite.name === `ui-tile-spells.png`).sprite;
+      context.drawImage(sprite, UI_LEFT + i * 64, UI_TOP);
+    } else if (i === 12) {
+      sprite = sprites.find(sprite => sprite.name === `ui-tile-pause.png`).sprite;
+      context.drawImage(sprite, UI_LEFT + i * 64, UI_TOP);
+    }
+
+    // Divider
     if (i !== 0 && i !== 13) context.drawImage(sprites.find(sprite => sprite.name === `ui-divider.png`).sprite, i * 64, UI_TOP);
   }
 

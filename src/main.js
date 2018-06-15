@@ -8,7 +8,7 @@ console.log('Main.js loaded');
 let debug = false;
 let lastRenderUpdate = Date.now();
 let lastLogicUpdate = Date.now();
-let canvas, cursor, context, creatures, player, uiClicked; // eslint-disable-line no-unused-vars
+let canvas, cursor, context, creatures, player, clicking; // eslint-disable-line no-unused-vars
 let takingAction = false;
 
 const CANVAS_WIDTH = (13 * 64) + 2; // 834
@@ -38,6 +38,12 @@ function initialize () {
     if (cursor.x > 0 && cursor.x < CANVAS_WIDTH && cursor.y > 0 && cursor.y < CANVAS_HEIGHT) {
       executeClick();
     }
+  });
+  document.addEventListener('mousedown', () => {
+    clicking = true;
+  });
+  document.addEventListener('mouseup', () => {
+    clicking = false;
   });
 }
 
@@ -98,8 +104,6 @@ setInterval(logicUpdate, 1000 / ups);
 function executeClick () {
   if (cursor.y < CANVAS_HEIGHT - 64 - 2) {
     if (takingAction === player && !player.moveTarget) player.move(cursor.clone());
-  } else {
-    uiClicked = true;
   }
   return true;
 }
