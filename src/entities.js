@@ -20,6 +20,7 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
     this.alignment = 'Neutral';
     this.maxActionTimer = 100;
     this.actionTimer = this.maxActionTimer;
+    this.moveTarget = false;
   }
 
   addStats (stats) {
@@ -37,7 +38,16 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
       // e.g. `creature.moveTo(10, 50)`
       this.position = {x: arguments[0], y: arguments[1]};
     }
+    this.moveTarget = false;
     return this;
+  }
+
+  move (target) { // Target is a Vector
+    if (this.position === target) {
+      this.moveTarget = false;
+    } else {
+      this.moveTarget = target;
+    }
   }
 }
 

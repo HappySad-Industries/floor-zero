@@ -1,4 +1,4 @@
-/* globals CANVAS_HEIGHT, CANVAS_WIDTH, canvas, context, cursor, debug, Image, creatures, uiClicked */
+/* globals CANVAS_HEIGHT, CANVAS_WIDTH, canvas, context, cursor, debug, Image, creatures, uiClicked, fps */
 
 function render (sprites) { // eslint-disable-line no-unused-vars
   if (debug) console.log('Rendering started');
@@ -18,6 +18,22 @@ function render (sprites) { // eslint-disable-line no-unused-vars
       context.drawImage(sprite, creature.position.x - sprite.width / 2, creature.position.y - sprite.height / 2);
     } else {
       throw new Error(`Sprite ${creature.sprite} isn't loaded!`);
+    }
+  }
+}
+
+function renderMovement (dt, creature) { // eslint-disable-line no-unused-vars
+  // It's called *render*Movement but no actual rendering occurs here, just the
+  // prep for it. I guess it is rendering because it is changing the position in
+  // order to render smoothly.
+
+  if (creature.moveTarget) {
+    let scaleFactor = 0.01; // To calm down the ridiculous speeds
+    let lambda = dt * scaleFactor * creature.stats.baseAgility;
+    if (creature.position.distance(creature.moveTarget) <= lambda) { // If within reach, just move there.
+      creature.moveTo(creature.moveTarget);
+    } else { // Move towards the target, lambda amounts at a time
+      creature.position = creature.position.add(creature.position.to(creature.moveTarget).unit(lambda));
     }
   }
 }
