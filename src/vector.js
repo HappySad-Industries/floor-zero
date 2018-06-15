@@ -17,6 +17,22 @@ class Vector { // eslint-disable-line no-unused-vars
     // looks fancy but it's just the pythagorean theorem
   }
 
+  magnitude () {
+    return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+  }
+
+  unit (scale = 1) {
+    return new Vector(scale * this.x / this.magnitude(), scale * this.y / this.magnitude());
+  }
+
+  to (target) {
+    return new Vector(target.x - this.x, target.y - this.y);
+  }
+
+  add (other) {
+    return new Vector(this.x + other.x, this.y + other.y);
+  }
+
   // STATIC functions
 
   static distance (vec1, vec2) { // calculates distance between two vectors
