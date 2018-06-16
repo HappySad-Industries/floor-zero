@@ -1,4 +1,4 @@
-/* globals Player, Enemy, StatBlock, render, loadSprites, loadUI, renderUI, renderMovement, Vector */
+/* globals Player, Enemy, StatBlock, render, loadSprites, loadUI, renderUI, renderEffects, renderMovement, Vector */
 
 // Ability list
 /* globals Fireball */
@@ -12,6 +12,7 @@ let debug = false;
 let lastRenderUpdate = Date.now();
 let lastLogicUpdate = Date.now();
 let canvas, cursor, context, creatures, player, clicking; // eslint-disable-line no-unused-vars
+let moveMode = false; // eslint-disable-line no-unused-vars
 let takingAction = false;
 
 const CANVAS_WIDTH = (13 * 64) + 2; // 834
@@ -90,6 +91,7 @@ function renderUpdate (sprites, uiSprites) {
 
   render(sprites);
   renderUI(uiSprites);
+  renderEffects();
   if (takingAction && takingAction.moveTarget) renderMovement(dt, takingAction);
 }
 
@@ -106,7 +108,7 @@ setInterval(logicUpdate, 1000 / ups);
 
 function executeClick () {
   if (cursor.y < CANVAS_HEIGHT - 64 - 2) {
-    if (takingAction === player && !player.moveTarget) player.move(cursor.clone());
+    if (takingAction === player && moveMode && !player.moveTarget) player.move(cursor.clone());
   }
   return true;
 }
