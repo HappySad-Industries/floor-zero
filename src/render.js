@@ -166,7 +166,7 @@ function renderEffects () { // eslint-disable-line no-unused-vars
     context.arc(player.position.x, player.position.y, player.stats.getStat('agility') * 10, 0, 2 * Math.PI);
     context.stroke();
     if (!targetVisual) {
-      targetVisual = new TargetArrow(player.position);
+      targetVisual = new TargetArrow(player.position, player.stats.getStat('agility') * 10);
     }
     targetVisual.render();
   }
