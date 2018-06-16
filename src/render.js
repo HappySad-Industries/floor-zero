@@ -1,4 +1,4 @@
-/* globals CANVAS_HEIGHT, CANVAS_WIDTH, canvas, context, cursor, clicking, debug, Image, creatures */
+/* globals CANVAS_HEIGHT, CANVAS_WIDTH, canvas, context, cursor, clicking, debug, Event, Image, creatures, player, moveMode */
 
 function render (sprites) { // eslint-disable-line no-unused-vars
   if (debug) console.log('Rendering started');
@@ -109,10 +109,17 @@ function renderUI (sprites) { // eslint-disable-line no-unused-vars
     if (cursor.y > UI_TOP && (cursor.x > UI_LEFT + i * 64 && cursor.x < UI_LEFT + i * 64 + 64)) {
       if (i !== 0) {
         context.drawImage(sprites.find(sprite => sprite.name === `ui-tile-outline-dark.png`).sprite, UI_LEFT + i * 64, UI_TOP);
-        if (clicking) context.drawImage(sprites.find(sprite => sprite.name === `ui-tile-background-dark.png`).sprite, UI_LEFT + i * 64, UI_TOP);
+        if (clicking) {
+          document.dispatchEvent(new Event(`ui-click-${i}`));
+          context.drawImage(sprites.find(sprite => sprite.name === `ui-tile-background-dark.png`).sprite, UI_LEFT + i * 64, UI_TOP);
+        }
       } else {
         context.drawImage(sprites.find(sprite => sprite.name === `ui-tile-hover-move.png`).sprite, UI_LEFT + i * 64, UI_TOP);
-        if (clicking) context.drawImage(sprites.find(sprite => sprite.name === `ui-tile-active-move.png`).sprite, UI_LEFT + i * 64, UI_TOP);
+        if (clicking) {
+          console.log(`ui-click-${i}`);
+          document.dispatchEvent(new Event(`ui-click-${i}`));
+          context.drawImage(sprites.find(sprite => sprite.name === `ui-tile-active-move.png`).sprite, UI_LEFT + i * 64, UI_TOP);
+        }
       }
     } else {
       if (i !== 0) context.drawImage(sprites.find(sprite => sprite.name === `ui-tile-outline.png`).sprite, UI_LEFT + i * 64, UI_TOP);
@@ -138,9 +145,19 @@ function renderUI (sprites) { // eslint-disable-line no-unused-vars
     if (i !== 0 && i !== 13) context.drawImage(sprites.find(sprite => sprite.name === `ui-divider.png`).sprite, i * 64, UI_TOP);
   }
 
+  // Borders
   context.drawImage(sprites.find(sprite => sprite.name === `border-side.png`).sprite, 0, 0);
   context.drawImage(sprites.find(sprite => sprite.name === `border-side.png`).sprite, CANVAS_WIDTH - 2, 0);
   context.drawImage(sprites.find(sprite => sprite.name === `border-toppom.png`).sprite, 0, 0);
   context.drawImage(sprites.find(sprite => sprite.name === `border-toppom.png`).sprite, 0, UI_TOP);
   context.drawImage(sprites.find(sprite => sprite.name === `border-toppom.png`).sprite, 0, CANVAS_HEIGHT - 2);
+}
+
+function renderEffects () { // eslint-disable-line no-unused-vars
+  // Render effects and other misc buddies (e.g. tooltips)
+
+  if (moveMode) {
+    context.arc(player.position.x, player.position.y, player.stats.getStat('agility') * 10, 0, 2 * Math.PI);
+    context.stroke();
+  }
 }
