@@ -5,6 +5,7 @@ function render (sprites) { // eslint-disable-line no-unused-vars
 
   context.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
 
+  context.beginPath();
   let pattern = context.createPattern(sprites.find(sprite => sprite.name === 'tile.png').sprite, 'repeat');
   context.fillStyle = pattern;
   context.fillRect(0 + 2, 0 + 2, canvas.width - 4, canvas.height - 64 - 2);
