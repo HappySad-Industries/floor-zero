@@ -12,6 +12,7 @@ let lastRenderUpdate = Date.now();
 let lastLogicUpdate = Date.now();
 let canvas, cursor, context, creatures, player, clicking; // eslint-disable-line no-unused-vars
 let moveMode = false; // eslint-disable-line no-unused-vars
+let targetVisual = false;
 let takingAction = false;
 
 const CANVAS_WIDTH = (13 * 64) + 2; // 834
@@ -107,7 +108,11 @@ setInterval(logicUpdate, 1000 / ups);
 
 function executeClick () {
   if (cursor.y < CANVAS_HEIGHT - 64 - 2) {
-    if (takingAction === player && moveMode && !player.moveTarget) player.move(cursor.clone());
+    if (takingAction === player && moveMode && !player.moveTarget) {
+      player.move(cursor.clone());
+      moveMode = false;
+      targetVisual = false;
+    }
   }
   return true;
 }

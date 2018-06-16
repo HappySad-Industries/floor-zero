@@ -1,4 +1,4 @@
-/* globals CANVAS_HEIGHT, CANVAS_WIDTH, canvas, context, cursor, clicking, debug, Event, Image, creatures, player, moveMode */
+/* globals CANVAS_HEIGHT, CANVAS_WIDTH, canvas, context, cursor, clicking, debug, Event, Image, creatures, player, moveMode, targetVisual, TargetArrow */
 
 function render (sprites) { // eslint-disable-line no-unused-vars
   if (debug) console.log('Rendering started');
@@ -165,5 +165,9 @@ function renderEffects () { // eslint-disable-line no-unused-vars
   if (moveMode) {
     context.arc(player.position.x, player.position.y, player.stats.getStat('agility') * 10, 0, 2 * Math.PI);
     context.stroke();
+    if (!targetVisual) {
+      targetVisual = new TargetArrow(player.position);
+    }
+    targetVisual.render();
   }
 }
