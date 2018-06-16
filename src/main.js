@@ -105,7 +105,7 @@ setInterval(logicUpdate, 1000 / ups);
 
 function executeClick () {
   if (cursor.y < CANVAS_HEIGHT - 64 - 2) {
-    if (takingAction === player && !player.moveTarget) player.move(cursor.clone());
+    if (takingAction === player && moveMode && !player.moveTarget) player.move(cursor.clone());
   }
   return true;
 }
