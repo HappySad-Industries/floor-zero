@@ -22,6 +22,11 @@ class StatBlock { // eslint-disable-line no-unused-vars
     this.entity = entity;
   }
 
+  unassign () {
+    this.entity.stats = undefined;
+    this.entity = undefined;
+  }
+
   // glorified 'get a variable' functions
 
   getStat (stat) {

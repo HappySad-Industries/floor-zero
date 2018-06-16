@@ -1,4 +1,4 @@
-/* globals StatBlock, Vector, Spellbook */
+/* globals StatBlock, Vector, Spellbook, HitboxCircle, HitboxMulti */
 
 // Entities
 
@@ -16,6 +16,7 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
     super();
     this.name = 'Nameless';
     this.addStats(new StatBlock(20));
+    this.addHitbox(new HitboxCircle(20));
     this.sprite = 'baddie.png';
     this.alignment = 'Neutral';
     this.maxActionTimer = 100;
@@ -24,16 +25,34 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
   }
 
   addStats (stats) {
+    if (this.stats) {
+      this.stats.unassign();
+    }
     stats.assign(this);
     return this;
   }
 
   addSpellbook (spells) {
+    if (this.spellbook) {
+      this.spellbook.unassign();
+    }
     if (spells instanceof Spellbook) {
       spells.assign(this);
     } else {
       (new Spellbook(spells)).assign(this);
     }
+    return this;
+  }
+
+  addHitbox (hitbox, multi = false) {
+    if (this.hitbox && !multi) {
+      this.hitbox.unassign();
+    } else if (!multi) {
+      hitbox.assign(this);
+    } else {
+      new HitboxMulti([this.hitbox, hitbox]).assign(this);
+    }
+    return this;
   }
 
   moveTo () {
@@ -44,7 +63,7 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
     } else {
       // Two arguments specified, an x and a y
       // e.g. `creature.moveTo(10, 50)`
-      this.position = {x: arguments[0], y: arguments[1]};
+      this.position = new Vector(arguments[0], arguments[1]);
     }
     this.moveTarget = false;
     return this;

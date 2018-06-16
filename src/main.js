@@ -3,6 +3,9 @@
 // Ability list
 /* globals Fireball */
 
+// Hitbox types
+/* globals HitboxCircle */
+
 console.log('Main.js loaded');
 
 let debug = false;

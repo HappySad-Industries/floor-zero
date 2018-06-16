@@ -10,6 +10,11 @@ class Spellbook { // eslint-disable-line no-unused-vars
     this.entity = entity;
   }
 
+  unassign () {
+    this.entity.spellbook = undefined;
+    this.entity = undefined;
+  }
+
   getSpell (name) {
     for (let i in this.spells) {
       if (this.spells[i].name === name) {

@@ -19,6 +19,12 @@ function render (sprites) { // eslint-disable-line no-unused-vars
     } else {
       throw new Error(`Sprite ${creature.sprite} isn't loaded!`);
     }
+
+    if (creature.hitbox) {
+      context.translate(creature.hitbox.pos().x, creature.hitbox.pos().y);
+      creature.hitbox.render();
+      context.translate(-creature.hitbox.pos().x, -creature.hitbox.pos().y);
+    }
   }
 }
 
