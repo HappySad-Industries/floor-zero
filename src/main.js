@@ -4,7 +4,6 @@
 /* globals Fireball */
 
 // Hitbox types
-/* globals HitboxCircle */
 
 console.log('Main.js loaded');
 
@@ -66,7 +65,7 @@ function startGame () {
 
 function logicUpdate () {
   let now = Date.now();
-  let dt = now - lastLogicUpdate;
+  let dt = now - lastLogicUpdate; // eslint-disable-line no-unused-vars
   lastLogicUpdate = now;
 
   if (!takingAction) {
