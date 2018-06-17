@@ -22,7 +22,7 @@ class TargetArrow extends TargetVisual { // eslint-disable-line no-unused-vars
     context.moveTo(this.startPoint.x, this.startPoint.y);
     if (this.maxLength && this.startPoint.to(cursor).magnitude() > this.maxLength) {
       let direction = this.startPoint.to(cursor).unit(this.maxLength);
-      context.lineTo(direction.x, direction.y);
+      context.lineTo(direction.x + this.startPoint.x, direction.y + this.startPoint.y);
     } else {
       context.lineTo(cursor.x, cursor.y);
     }
