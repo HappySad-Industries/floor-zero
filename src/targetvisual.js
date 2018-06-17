@@ -20,13 +20,12 @@ class TargetArrow extends TargetVisual { // eslint-disable-line no-unused-vars
   render () {
     context.beginPath();
     context.moveTo(this.startPoint.x, this.startPoint.y);
-    if (this.maxLength && this.startPoint.to(cursor).magnitude() > this.maxLength) {
-      console.log('more than max');
-      let direction = this.startPoint.to(cursor).unit(this.maxLength);
-      context.lineTo(direction.x, direction.y);
-    } else {
-      context.lineTo(cursor.x, cursor.y);
+    let arrowVector = this.startPoint.to(cursor);
+    if (this.maxLength) {
+      arrowVector = arrowVector.limit(this.maxLength);
     }
+    console.log(`${arrowVector.magnitude()} (${arrowVector.x}, ${arrowVector.y})`);
+    context.lineTo(arrowVector.x, arrowVector.y);
     context.stroke();
   }
 }

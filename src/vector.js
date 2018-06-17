@@ -21,6 +21,13 @@ class Vector { // eslint-disable-line no-unused-vars
     return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
   }
 
+  limit (scale = 1) {
+    if (this.magnitude() > scale) {
+      return this.unit(scale);
+    }
+    return this.clone();
+  }
+
   unit (scale = 1) {
     return new Vector(scale * this.x / this.magnitude(), scale * this.y / this.magnitude());
   }
