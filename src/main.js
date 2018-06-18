@@ -1,4 +1,4 @@
-/* globals Player, Enemy, StatBlock, render, loadSprites, loadUI, renderUI, renderEffects, renderMovement, Vector, TargetArrow */
+/* globals Player, Enemy, Event, StatBlock, render, loadSprites, loadUI, renderUI, renderEffects, renderMovement, Vector, TargetArrow */
 
 // Ability list
 /* globals Fireball */
@@ -24,13 +24,21 @@ let fps = 1000;
 let ups = 10;
 
 function lookForTargets (spell) {
-  if (targetSpell.targetType === 'arrow') {
-    targetVisual = new TargetArrow(player.position.clone());
-  }
-  console.log('targetVisual true');
+  if (targetSpell === spell) {
+    console.log('Exiting targeting mode');
+    targetVisual = false;
+    targetMode = false;
+    targetSpell = false;
+    target = false;
+  } else {
+    if (spell.targetType === 'arrow') {
+      targetVisual = new TargetArrow(player.position.clone());
+    }
+    console.log('targetVisual true');
 
-  targetMode = true;
-  targetSpell = spell;
+    targetMode = true;
+    targetSpell = spell;
+  }
 }
 
 function mouseHover () {
@@ -53,6 +61,19 @@ function mouseClick () {
       }
     }
   }
+  const UI_TOP = CANVAS_HEIGHT - 64;
+  const UI_LEFT = 1;
+  for (let i = 0; i < 13; i++) {
+    if (cursor.y > UI_TOP && (cursor.x > UI_LEFT + i * 64 && cursor.x < UI_LEFT + i * 64 + 64)) {
+      if (i !== 0) {
+        console.log(`ui-click-${i}`);
+        document.dispatchEvent(new Event(`ui-click-${i}`));
+      } else {
+        console.log(`ui-click-${i}`);
+        document.dispatchEvent(new Event(`ui-click-${i}`));
+      }
+    }
+  }
 }
 
 function executeClick () {
@@ -64,7 +85,6 @@ function executeClick () {
       targetVisual = false;
     }
   }
-  return true;
 }
 
 function initialize () {
@@ -86,10 +106,10 @@ function initialize () {
     cursor.y = e.clientY - rect.top;
   });
   document.addEventListener('click', (e) => {
+    mouseClick();
     if (cursor.x > 0 && cursor.x < CANVAS_WIDTH && cursor.y > 0 && cursor.y < CANVAS_HEIGHT) {
       executeClick();
     }
-    mouseClick();
   });
   document.addEventListener('mousedown', () => {
     clicking = true;
@@ -133,8 +153,10 @@ function logicUpdate () {
   if (targetMode === false && targetSpell && target) {
     // targetMode needs to be false for future spells with multiple targets
     targetSpell.cast(target);
-    target = false;
     targetVisual = false;
+    targetMode = false;
+    targetSpell = false;
+    target = false;
   }
 
   mouseHover();

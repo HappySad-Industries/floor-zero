@@ -1,7 +1,13 @@
-/* globals moveMode, player, target, targetMode, lookForTargets */
+/* globals moveMode, player, targetVisual, lookForTargets */
 
 document.addEventListener('ui-click-0', () => {
-  moveMode = true;
+  if (moveMode) {
+    moveMode = false;
+    targetVisual = false;
+    player.cancelMove();
+  } else {
+    moveMode = true;
+  }
 });
 
 document.addEventListener('ui-click-1', () => {

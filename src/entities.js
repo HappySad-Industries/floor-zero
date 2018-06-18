@@ -82,6 +82,10 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
       }
     }
   }
+
+  cancelMove () {
+    this.moveTarget = false;
+  }
 }
 
 // The player class

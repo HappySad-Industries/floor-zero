@@ -115,14 +115,11 @@ function renderUI (sprites) { // eslint-disable-line no-unused-vars
       if (i !== 0) {
         context.drawImage(sprites.find(sprite => sprite.name === `ui-tile-outline-dark.png`).sprite, UI_LEFT + i * 64, UI_TOP);
         if (clicking) {
-          document.dispatchEvent(new Event(`ui-click-${i}`));
           context.drawImage(sprites.find(sprite => sprite.name === `ui-tile-background-dark.png`).sprite, UI_LEFT + i * 64, UI_TOP);
         }
       } else {
         context.drawImage(sprites.find(sprite => sprite.name === `ui-tile-hover-move.png`).sprite, UI_LEFT + i * 64, UI_TOP);
         if (clicking) {
-          console.log(`ui-click-${i}`);
-          document.dispatchEvent(new Event(`ui-click-${i}`));
           context.drawImage(sprites.find(sprite => sprite.name === `ui-tile-active-move.png`).sprite, UI_LEFT + i * 64, UI_TOP);
         }
       }
