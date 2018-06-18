@@ -34,7 +34,7 @@ function renderMovement (dt, creature) { // eslint-disable-line no-unused-vars
   // order to render smoothly.
 
   if (creature.moveTarget) {
-    let scaleFactor = 0.01; // To calm down the ridiculous speeds
+    let scaleFactor = 0.03; // To calm down the ridiculous speeds
     let lambda = dt * scaleFactor * creature.stats.baseAgility;
     if (creature.position.distance(creature.moveTarget) <= lambda) { // If within reach, just move there.
       creature.moveTo(creature.moveTarget);
