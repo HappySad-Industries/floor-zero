@@ -72,7 +72,7 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
   }
 
   die () {
-    console.log(`Creature ${this.name} is ded 💀☠️👻`)
+    console.log(`Creature ${this.name} is ded 💀☠️👻`);
     let index = creatures.indexOf(this);
     if (index > -1) {
       creatures.splice(index, 1);
