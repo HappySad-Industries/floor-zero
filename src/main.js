@@ -25,7 +25,7 @@ const CANVAS_HEIGHT = (448 + 64) + 4; // 516
 let fps = 1000;
 let ups = 10;
 
-function lookForTargets (spell) {
+function lookForTargets (spell) { // eslint-disable-line no-unused-vars
   if (targetSpell === spell) {
     console.log('Exiting targeting mode');
     targetVisual = false;
@@ -185,6 +185,14 @@ function logicUpdate () {
     targetSpell = false;
     target = false;
   }
+
+  creatures.map(creature => {
+    if (creature.stats.hp() <= 0) {
+      creature.die();
+    } else {
+      return creature;
+    }
+  });
 
   let arr = creatures.slice();
   for (let i = 0; i < arr.length; i++) {
