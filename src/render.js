@@ -44,6 +44,8 @@ function renderMovement (dt, creature) { // eslint-disable-line no-unused-vars
     let lambda = dt * scaleFactor * creature.stats.getStat('movement') / 20;
     if (creature.position.distance(creature.moveTarget) <= lambda) { // If within reach, just move there.
       creature.moveTo(creature.moveTarget);
+      halted = false;
+      takingAction = false;
     } else { // Move towards the target, lambda amounts at a time
       creature.position = creature.position.add(creature.position.to(creature.moveTarget).unit(lambda));
     }

@@ -66,4 +66,12 @@ class Vector { // eslint-disable-line no-unused-vars
   static distance (vec1, vec2) { // calculates distance between two vectors
     return vec1.distance(vec2);
   }
+
+  static random (mag = 1) {
+    let vect = new Vector(Math.random(), Math.random());
+    if (mag !== 1) {
+      return vect.unit(mag);
+    }
+    return vect;
+  }
 }

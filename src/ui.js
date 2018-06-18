@@ -1,11 +1,11 @@
-/* globals moveMode, player, targetVisual, lookForTargets */
+/* globals moveMode, player, targetVisual, takingAction, lookForTargets */
 
 document.addEventListener('ui-click-0', () => {
   if (moveMode) {
     moveMode = false;
     targetVisual = false;
     player.cancelMove();
-  } else {
+  } else if (takingAction === player) {
     moveMode = true;
   }
 });

@@ -18,6 +18,8 @@ let targetMode = false;
 let targetSpell = false;
 let target = false;
 
+let halted = false;
+
 const CANVAS_WIDTH = (13 * 64) + 2; // 834
 const CANVAS_HEIGHT = (448 + 64) + 4; // 516
 let fps = 1000;
@@ -31,6 +33,9 @@ function lookForTargets (spell) {
     targetSpell = false;
     target = false;
   } else {
+    if (takingAction !== player) {
+      return;
+    }
     if (spell.targetType === 'arrow') {
       targetVisual = new TargetArrow(player.position.clone());
       targetVisual.setStyle(spell.style);
@@ -94,6 +99,7 @@ function executeClick () {
   if (cursor.y < CANVAS_HEIGHT - 64 - 2) {
     if (takingAction === player && moveMode && !player.moveTarget) {
       player.move(cursor.clone());
+      halted = true;
       moveMode = false;
       targetVisual = false;
     }
@@ -147,7 +153,7 @@ function startGame () {
   player.addSpellbook([new Fireball()]);
 
   creatures.push(new Enemy().addStats(new StatBlock(5)).moveTo(300, 100));
-  creatures.push(new Enemy().addStats(new StatBlock(5)).moveTo(500, 100));
+  creatures.push(new Creature().addStats(new StatBlock(5)).moveTo(500, 100));
 }
 
 function logicUpdate () {
@@ -155,7 +161,7 @@ function logicUpdate () {
   let dt = now - lastLogicUpdate; // eslint-disable-line no-unused-vars
   lastLogicUpdate = now;
 
-  if (!takingAction) {
+  if (!takingAction && !halted) {
     for (let i in creatures) {
       creatures[i].actionTimer -= creatures[i].stats.getStat('initiative');
       if (creatures[i].actionTimer <= 0) {
@@ -166,6 +172,9 @@ function logicUpdate () {
     }
   } else {
     console.log(`It is ${takingAction.name}'s action.`);
+    if (takingAction !== player) {
+      takingAction.move(Vector.random(takingAction.stats.getStat('movement')));
+    }
   }
 
   if (targetMode === false && targetSpell && target) {
@@ -195,7 +204,9 @@ function renderUpdate (sprites, uiSprites) {
   render(sprites);
   renderUI(uiSprites);
   renderEffects();
-  if (takingAction && takingAction.moveTarget) renderMovement(dt, takingAction);
+  if (takingAction && takingAction.moveTarget) {
+    renderMovement(dt, takingAction);
+  }
 }
 
 initialize();
