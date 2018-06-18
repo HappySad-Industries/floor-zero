@@ -32,6 +32,27 @@ class Vector { // eslint-disable-line no-unused-vars
     return new Vector(scale * this.x / this.magnitude(), scale * this.y / this.magnitude());
   }
 
+  theta (degrees = false) {
+    let rads = Math.atan2(this.y, this.x);
+    if (degrees) {
+      return rads / Math.PI * 180;
+    }
+    return rads;
+  }
+
+  rotate (rads, add = false) {
+    let vect = new Vector();
+    let mag = this.magnitude();
+    let theta = rads;
+    if (add) {
+      theta += this.theta();
+    }
+    vect.x = mag * Math.cos(theta);
+    vect.y = mag * Math.sin(theta);
+
+    return vect;
+  }
+
   to (target) {
     return new Vector(target.x - this.x, target.y - this.y);
   }

@@ -138,6 +138,7 @@ function startGame () {
   creatures = []; // Array of the creatures in the game, including the player
 
   player = new Player();
+  player.moveTo(200, 200);
   player.addStats(new StatBlock(20));
   creatures.push(player);
   player.stats.takeDamage(5);

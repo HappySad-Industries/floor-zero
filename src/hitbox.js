@@ -5,6 +5,9 @@
 class Hitbox { // eslint-disable-line no-unused-vars
   constructor (offset) {
     this.offset = offset || new Vector(0, 0);
+    this.flags = {
+      shouldRender: true
+    };
   }
 
   pos () {
@@ -51,6 +54,9 @@ class HitboxCircle extends Hitbox { // eslint-disable-line no-unused-vars
   }
 
   render () {
+    if (!this.flags.shouldRender) {
+      return; // Don't render something that shouldn't be rendered
+    }
     context.beginPath();
     context.arc(0, 0, this.radius, 0, Math.PI * 2);
     context.stroke();
@@ -73,6 +79,15 @@ class HitboxRect extends Hitbox { // eslint-disable-line no-unused-vars
     point.y > thisY - (this.height / 2) &&
     point.y < thisY + (this.height / 2);
   }
+
+  render () {
+    if (!this.flags.shouldRender) {
+      return; // Don't render something that shouldn't be rendered
+    }
+    context.beginPath();
+    let pos = this.pos();
+    context.strokeRect(pos.x - this.width / 2, pos.y - this.height / 2, this.width, this.height);
+  }
 }
 
 // Hitbox consisting of multiple other hitboxes
@@ -92,6 +107,9 @@ class HitboxMulti extends Hitbox { // eslint-disable-line no-unused-vars
   }
 
   render () {
+    if (!this.flags.shouldRender) {
+      return; // Don't render something that shouldn't be rendered
+    }
     for (let i in this.hitboxes) {
       this.hitboxes[i].render();
     }
