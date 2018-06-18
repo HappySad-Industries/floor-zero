@@ -57,7 +57,6 @@ function mouseHover () {
   for (let i = 0; i < creatures.length; i++) {
     if (creatures[i].hitbox.isColliding(cursor)) {
       creatures[i].hitbox.flags.hovered = true;
-      console.log(`Hovering over creature ${creatures[i].name}`);
     } else {
       creatures[i].hitbox.flags.hovered = false;
     }
@@ -94,7 +93,6 @@ function mouseClick () {
 function executeClick () {
   if (cursor.y < CANVAS_HEIGHT - 64 - 2) {
     if (takingAction === player && moveMode && !player.moveTarget) {
-      console.log('targetVisual false');
       player.move(cursor.clone());
       moveMode = false;
       targetVisual = false;
