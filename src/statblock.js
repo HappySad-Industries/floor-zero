@@ -39,11 +39,11 @@ class StatBlock { // eslint-disable-line no-unused-vars
   // glorified 'get a variable' functions
 
   getStat (stat) {
-    let lower = stat.toLowerCase();
+    let lower = stat.charAt(0).toLowerCase() + stat.substr(1);
     let upper = lower.charAt(0).toUpperCase() + lower.substr(1);
     let value = this['base' + upper];
-    if (this.statCalculators[stat]) {
-      value += this.statCalculators[stat]();
+    if (this.statCalculators[lower]) {
+      value += this.statCalculators[lower]();
     }
     return value;
   }
