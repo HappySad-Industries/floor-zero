@@ -7,10 +7,21 @@ class TargetVisual {
     this.flags = {
       shouldRender: true
     };
+    this.style = {
+      strokeStyle: 'black',
+      fillStyle: 'black',
+      lineWidth: 4
+    };
   }
 
   render () {
     return false;
+  }
+
+  setStyle (style) {
+    for (let i in style) {
+      this.style[i] = style[i];
+    }
   }
 }
 
@@ -31,9 +42,9 @@ class TargetArrow extends TargetVisual { // eslint-disable-line no-unused-vars
       directionVector = directionVector.limit(this.maxLength);
     }
 
-    context.strokeStyle = 'black';
-    context.lineWidth = 4;
-    context.fillStyle = 'black';
+    context.strokeStyle = this.style.strokeStyle;
+    context.lineWidth = this.style.lineWidth;
+    context.fillStyle = this.style.fillStyle;
 
     context.save();
     context.beginPath();

@@ -33,6 +33,7 @@ function lookForTargets (spell) {
   } else {
     if (spell.targetType === 'arrow') {
       targetVisual = new TargetArrow(player.position.clone());
+      targetVisual.setStyle(spell.style);
     }
     console.log('targetVisual true');
 
