@@ -23,7 +23,7 @@ const CANVAS_HEIGHT = (448 + 64) + 4; // 516
 let fps = 1000;
 let ups = 10;
 
-function lookForTargets (spell) {
+function lookForTargets (spell) { // eslint-disable-line no-unused-vars
   if (targetSpell === spell) {
     console.log('Exiting targeting mode');
     targetVisual = false;
