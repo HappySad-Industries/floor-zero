@@ -40,8 +40,8 @@ function renderMovement (dt, creature) { // eslint-disable-line no-unused-vars
   // order to render smoothly.
 
   if (creature.moveTarget) {
-    let scaleFactor = 0.03; // To calm down the ridiculous speeds
-    let lambda = dt * scaleFactor * creature.stats.baseAgility;
+    let scaleFactor = 0.06; // To calm down the ridiculous speeds
+    let lambda = dt * scaleFactor * creature.stats.getStat('movement') / 20;
     if (creature.position.distance(creature.moveTarget) <= lambda) { // If within reach, just move there.
       creature.moveTo(creature.moveTarget);
     } else { // Move towards the target, lambda amounts at a time
@@ -166,10 +166,10 @@ function renderEffects () { // eslint-disable-line no-unused-vars
 
   if (moveMode) {
     context.beginPath();
-    context.arc(player.position.x, player.position.y, player.stats.getStat('agility') * 10, 0, 2 * Math.PI);
+    context.arc(player.position.x, player.position.y, player.stats.getStat('movement'), 0, 2 * Math.PI);
     context.stroke();
     if (!targetVisual) {
-      targetVisual = new TargetArrow(player.position.clone(), player.stats.getStat('agility') * 10);
+      targetVisual = new TargetArrow(player.position.clone(), player.stats.getStat('movement'));
     }
   }
 
