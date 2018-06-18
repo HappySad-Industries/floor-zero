@@ -168,6 +168,9 @@ function renderEffects () { // eslint-disable-line no-unused-vars
     if (!targetVisual) {
       targetVisual = new TargetArrow(player.position.clone(), player.stats.getStat('agility') * 10);
     }
+  }
+
+  if (targetVisual) {
     targetVisual.render();
   }
 }

@@ -1,4 +1,4 @@
-/* globals Player, Enemy, StatBlock, render, loadSprites, loadUI, renderUI, renderEffects, renderMovement, Vector */
+/* globals Player, Enemy, StatBlock, render, loadSprites, loadUI, renderUI, renderEffects, renderMovement, Vector, TargetArrow */
 
 // Ability list
 /* globals Fireball */
@@ -14,11 +14,58 @@ let canvas, cursor, context, creatures, player, clicking; // eslint-disable-line
 let moveMode = false; // eslint-disable-line no-unused-vars
 let targetVisual = false;
 let takingAction = false;
+let targetMode = false;
+let targetSpell = false;
+let target = false;
 
 const CANVAS_WIDTH = (13 * 64) + 2; // 834
 const CANVAS_HEIGHT = (448 + 64) + 4; // 516
 let fps = 1000;
 let ups = 10;
+
+function lookForTargets (spell) {
+  if (targetSpell.targetType === 'arrow') {
+    targetVisual = new TargetArrow(player.position.clone());
+  }
+  console.log('targetVisual true');
+
+  targetMode = true;
+  targetSpell = spell;
+}
+
+function mouseHover () {
+  for (let i = 0; i < creatures.length; i++) {
+    if (creatures[i].hitbox.isColliding(cursor)) {
+      console.log(`Hovering over creature ${creatures[i].name}`);
+    }
+  }
+}
+
+function mouseClick () {
+  for (let i = 0; i < creatures.length; i++) {
+    if (creatures[i].hitbox.isColliding(cursor)) {
+      if (targetMode) {
+        console.log(`Targeting creature ${creatures[i].name}`);
+        target = creatures[i];
+        targetMode = false;
+      } else {
+        console.log(`Clicking on creature ${creatures[i].name}`);
+      }
+    }
+  }
+}
+
+function executeClick () {
+  if (cursor.y < CANVAS_HEIGHT - 64 - 2) {
+    if (takingAction === player && moveMode && !player.moveTarget) {
+      console.log('targetVisual false');
+      player.move(cursor.clone());
+      moveMode = false;
+      targetVisual = false;
+    }
+  }
+  return true;
+}
 
 function initialize () {
   if (debug) console.log('Initializing game');
@@ -42,6 +89,7 @@ function initialize () {
     if (cursor.x > 0 && cursor.x < CANVAS_WIDTH && cursor.y > 0 && cursor.y < CANVAS_HEIGHT) {
       executeClick();
     }
+    mouseClick();
   });
   document.addEventListener('mousedown', () => {
     clicking = true;
@@ -75,13 +123,21 @@ function logicUpdate () {
       if (creatures[i].actionTimer <= 0) {
         creatures[i].actionTimer += creatures[i].maxActionTimer;
         takingAction = creatures[i];
-        console.log(`It is now ${creatures[i].name}'s action.`);
         break;
       }
     }
   } else {
-
+    console.log(`It is ${takingAction.name}'s action.`);
   }
+
+  if (targetMode === false && targetSpell && target) {
+    // targetMode needs to be false for future spells with multiple targets
+    targetSpell.cast(target);
+    target = false;
+    targetVisual = false;
+  }
+
+  mouseHover();
 }
 
 function renderUpdate (sprites, uiSprites) {
@@ -105,14 +161,3 @@ loadUI().then((uiSprites) => {
 });
 
 setInterval(logicUpdate, 1000 / ups);
-
-function executeClick () {
-  if (cursor.y < CANVAS_HEIGHT - 64 - 2) {
-    if (takingAction === player && moveMode && !player.moveTarget) {
-      player.move(cursor.clone());
-      moveMode = false;
-      targetVisual = false;
-    }
-  }
-  return true;
-}

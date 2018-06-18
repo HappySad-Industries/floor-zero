@@ -3,6 +3,7 @@
 class Ability { // eslint-disable-line no-unused-vars
   constructor (name) {
     this.name = name;
+    this.targetType = 'arrow';
   }
 
   cast (target) {

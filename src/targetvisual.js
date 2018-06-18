@@ -1,4 +1,3 @@
-
 /* globals context, cursor */
 
 // Target visual class
@@ -20,14 +19,12 @@ class TargetArrow extends TargetVisual { // eslint-disable-line no-unused-vars
   render () {
     context.beginPath();
     context.moveTo(this.startPoint.x, this.startPoint.y);
-    if (this.maxLength) {
-      if (this.maxLength && this.startPoint.to(cursor).magnitude() > this.maxLength) {
-        let direction = this.startPoint.to(cursor).unit(this.maxLength);
-        context.lineTo(direction.x + this.startPoint.x, direction.y + this.startPoint.y);
-      } else {
-        context.lineTo(cursor.x, cursor.y);
-      }
-      context.stroke();
+    if (this.maxLength && this.startPoint.to(cursor).magnitude() > this.maxLength) {
+      let direction = this.startPoint.to(cursor).unit(this.maxLength);
+      context.lineTo(direction.x + this.startPoint.x, direction.y + this.startPoint.y);
+    } else {
+      context.lineTo(cursor.x, cursor.y);
     }
+    context.stroke();
   }
 }
