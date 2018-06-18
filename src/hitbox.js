@@ -28,10 +28,6 @@ class Hitbox { // eslint-disable-line no-unused-vars
     this.entity = undefined;
   }
 
-  isHovered (cursor) {
-    this.isColliding(cursor);
-  }
-
   // Overriden by subclasses. Checks if a point collides with the hitbox.
   isColliding (point) {
     return false; // Placeholder
