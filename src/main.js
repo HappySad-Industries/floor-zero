@@ -177,9 +177,10 @@ function logicUpdate () {
     target = false;
   }
 
-  for (let i = 0; i < creatures.length; i++) {
-    if (creatures[i].stats.hp() <= 0) {
-      creatures[i].die();
+  let arr = creatures.slice();
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].stats.hp() <= 0) {
+      arr[i].die();
     }
   }
 
