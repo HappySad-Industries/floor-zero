@@ -41,6 +41,17 @@ function lookForTargets (spell) {
   }
 }
 
+function cancelTargeting () {
+  targetVisual = false;
+  targetMode = false;
+  targetSpell = false;
+  target = false;
+
+  moveMode = false;
+  targetVisual = false;
+  player.cancelMove();
+}
+
 function mouseHover () {
   for (let i = 0; i < creatures.length; i++) {
     if (creatures[i].hitbox.isColliding(cursor)) {
@@ -110,6 +121,10 @@ function initialize () {
     if (cursor.x > 0 && cursor.x < CANVAS_WIDTH && cursor.y > 0 && cursor.y < CANVAS_HEIGHT) {
       executeClick();
     }
+  });
+  document.addEventListener('contextmenu', (event) => {
+    event.preventDefault();
+    cancelTargeting();
   });
   document.addEventListener('mousedown', () => {
     clicking = true;
