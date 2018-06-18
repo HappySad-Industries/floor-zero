@@ -13,3 +13,7 @@ document.addEventListener('ui-click-0', () => {
 document.addEventListener('ui-click-1', () => {
   lookForTargets(player.spellbook.getSpell('Fireball'));
 });
+
+document.addEventListener('ui-click-12', () => {
+  window.alert('🤨⏸☺️');
+});
