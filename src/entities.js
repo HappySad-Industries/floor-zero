@@ -80,7 +80,7 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
   }
 
   move (target) { // Target is a Vector
-    let maxMovement = 10 * this.stats.getStat('agility');
+    let maxMovement = this.stats.getStat('movement');
     if (this.position === target) {
       this.moveTarget = false;
     } else {

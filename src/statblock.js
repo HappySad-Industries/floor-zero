@@ -10,6 +10,15 @@ class StatBlock { // eslint-disable-line no-unused-vars
     this.baseIntelligence = 10;
     this.baseInitiative = 10;
 
+    this.baseMovement = 20;
+
+    this.statCalculators = {
+      movement: () => {
+        let agilityBonus = Math.pow(this.getStat('agility'), 0.8) * 20;
+        return agilityBonus;
+      }
+    };
+
     for (let i in statList) {
       let lower = i;
       let upper = lower.charAt(0).toUpperCase() + lower.substr(1);
@@ -32,7 +41,11 @@ class StatBlock { // eslint-disable-line no-unused-vars
   getStat (stat) {
     let lower = stat;
     let upper = lower.charAt(0).toUpperCase() + lower.substr(1);
-    return this['base' + upper];
+    let value = this['base' + upper];
+    if (this.statCalculators[stat]) {
+      value += this.statCalculators[stat]();
+    }
+    return value;
   }
 
   getResource (resource) {
