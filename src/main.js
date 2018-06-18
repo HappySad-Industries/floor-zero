@@ -177,6 +177,14 @@ function logicUpdate () {
     target = false;
   }
 
+  creatures.map(creature => {
+    if (creature.stats.hp() <= 0) {
+      creature.die();
+    } else {
+      return creature;
+    }
+  });
+
   let arr = creatures.slice();
   for (let i = 0; i < arr.length; i++) {
     if (arr[i].stats.hp() <= 0) {
