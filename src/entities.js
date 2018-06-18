@@ -1,4 +1,4 @@
-/* globals StatBlock, Vector, Spellbook, HitboxCircle, HitboxMulti */
+/* globals StatBlock, Vector, Spellbook, HitboxCircle, HitboxMulti, creatures */
 
 // Entities
 
@@ -22,6 +22,8 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
     this.maxActionTimer = 100;
     this.actionTimer = this.maxActionTimer;
     this.moveTarget = false;
+
+    creatures.push(this);
   }
 
   addStats (stats) {
@@ -67,6 +69,14 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
     }
     this.moveTarget = false;
     return this;
+  }
+
+  die () {
+    console.log(`Creature ${this.name} is ded 💀☠️👻`)
+    let index = creatures.indexOf(this);
+    if (index > -1) {
+      creatures.splice(index, 1);
+    }
   }
 
   move (target) { // Target is a Vector
