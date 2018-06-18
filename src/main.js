@@ -55,7 +55,10 @@ function cancelTargeting () {
 function mouseHover () {
   for (let i = 0; i < creatures.length; i++) {
     if (creatures[i].hitbox.isColliding(cursor)) {
+      creatures[i].hitbox.flags.hovered = true;
       console.log(`Hovering over creature ${creatures[i].name}`);
+    } else {
+      creatures[i].hitbox.flags.hovered = false;
     }
   }
 }

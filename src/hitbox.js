@@ -1,4 +1,4 @@
-/* globals context, Vector */
+/* globals context, Vector, restoreRenderDefaults */
 
 // Hitbox class
 
@@ -6,7 +6,8 @@ class Hitbox { // eslint-disable-line no-unused-vars
   constructor (offset) {
     this.offset = offset || new Vector(0, 0);
     this.flags = {
-      shouldRender: true
+      shouldRender: true,
+      hovered: false
     };
   }
 
@@ -58,8 +59,10 @@ class HitboxCircle extends Hitbox { // eslint-disable-line no-unused-vars
       return; // Don't render something that shouldn't be rendered
     }
     context.beginPath();
+    if (this.flags.hovered) context.strokeStyle = 'red';
     context.arc(0, 0, this.radius, 0, Math.PI * 2);
     context.stroke();
+    restoreRenderDefaults();
   }
 }
 

@@ -1,6 +1,6 @@
 /* globals CANVAS_HEIGHT, CANVAS_WIDTH, canvas, context, cursor, clicking, debug, Event, Image, creatures, player, moveMode, targetVisual, TargetArrow */
 
-function restoreDefaults () { // eslint-disable-line no-unused-vars
+function restoreRenderDefaults () { // eslint-disable-line no-unused-vars
   context.lineWidth = 1;
   context.fillStyle = 'black';
   context.strokeStyle = 'black';

@@ -1,4 +1,4 @@
-/* globals Vector, context, cursor, restoreDefaults */
+/* globals Vector, context, cursor, restoreRenderDefaults */
 
 // Target visual class
 
@@ -52,6 +52,6 @@ class TargetArrow extends TargetVisual { // eslint-disable-line no-unused-vars
     context.fill();
     context.restore();
 
-    restoreDefaults();
+    restoreRenderDefaults();
   }
 }
