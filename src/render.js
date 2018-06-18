@@ -5,7 +5,6 @@ function render (sprites) { // eslint-disable-line no-unused-vars
 
   context.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
 
-  context.beginPath();
   let pattern = context.createPattern(sprites.find(sprite => sprite.name === 'tile.png').sprite, 'repeat');
   context.fillStyle = pattern;
   context.fillRect(0 + 2, 0 + 2, canvas.width - 4, canvas.height - 64 - 2);
@@ -163,6 +162,7 @@ function renderEffects () { // eslint-disable-line no-unused-vars
   // Render effects and other misc buddies (e.g. tooltips)
 
   if (moveMode) {
+    context.beginPath();
     context.arc(player.position.x, player.position.y, player.stats.getStat('agility') * 10, 0, 2 * Math.PI);
     context.stroke();
     if (!targetVisual) {
