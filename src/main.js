@@ -149,7 +149,6 @@ function startGame () {
 
   player = new Player(200, 200);
   player.addStats(new StatBlock(20));
-  creatures.push(player);
   player.stats.takeDamage(5);
   player.addSpellbook([new Fireball()]);
   new Enemy(500, 100).addStats(new StatBlock(5));
@@ -167,11 +166,11 @@ function logicUpdate () {
       if (creatures[i].actionTimer <= 0) {
         creatures[i].actionTimer += creatures[i].maxActionTimer;
         takingAction = creatures[i];
+        console.log(`It is ${takingAction.name}'s action.`);
         break;
       }
     }
   } else if (!halted) {
-    console.log(`It is ${takingAction.name}'s action.`);
     if (takingAction !== player) {
       let endPosition = new Vector(-20, -20);
       while (endPosition.x < 0 || endPosition.x > FIELD_WIDTH || endPosition.y < 0 || endPosition.y > FIELD_HEIGHT) {
