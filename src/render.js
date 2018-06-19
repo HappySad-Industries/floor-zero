@@ -4,6 +4,7 @@ function restoreRenderDefaults () { // eslint-disable-line no-unused-vars
   context.lineWidth = 1;
   context.fillStyle = 'black';
   context.strokeStyle = 'black';
+  context.font = '12pt Arial';
 }
 
 function render (sprites) { // eslint-disable-line no-unused-vars
@@ -166,6 +167,11 @@ function renderUI (sprites) { // eslint-disable-line no-unused-vars
 function renderEffects () { // eslint-disable-line no-unused-vars
   // Render effects and other misc buddies (e.g. tooltips)
 
+  for (let i = 0; i < renderEffects.length; i++) {
+    if (renderEffects[i] instanceof Tooltip) {
+      renderEffects[i].render(cursor.x, cursor.y);
+    }
+  }
   if (moveMode) {
     context.beginPath();
     context.arc(player.position.x, player.position.y, player.stats.getStat('movement'), 0, 2 * Math.PI);

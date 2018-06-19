@@ -18,6 +18,7 @@ let targetMode = false;
 let targetSpell = false;
 let target = false;
 let win = false; // Because it is that kind of game
+let renderEffects = []; // An array of effects that will need to be rendered
 
 let halted = false;
 
@@ -67,6 +68,19 @@ function mouseHover () {
       creatures[i].hitbox.flags.hovered = true;
     } else {
       creatures[i].hitbox.flags.hovered = false;
+    }
+  }
+  const UI_TOP = CANVAS_HEIGHT - 64;
+  const UI_LEFT = 1;
+  for (let i = 0; i < 13; i++) {
+    if (cursor.y > UI_TOP && (cursor.x > UI_LEFT + i * 64 && cursor.x < UI_LEFT + i * 64 + 64)) {
+      if (i !== 0) {
+        console.log(`ui-hover-${i}`);
+        document.dispatchEvent(new Event(`ui-hover-${i}`));
+      } else {
+        console.log(`ui-hover-${i}`);
+        document.dispatchEvent(new Event(`ui-hover-${i}`));
+      }
     }
   }
 }
@@ -143,6 +157,8 @@ function initialize () {
   document.addEventListener('mouseup', () => {
     clicking = false;
   });
+
+  restoreRenderDefaults();
 }
 
 function startGame () {
