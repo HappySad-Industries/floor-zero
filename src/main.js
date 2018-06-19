@@ -189,8 +189,7 @@ function logicUpdate () {
     }
   } else if (!halted) {
     if (takingAction !== player) {
-      let endPosition = new Vector(Math.random() * FIELD_WIDTH, Math.random() * FIELD_HEIGHT);
-      takingAction.move(endPosition);
+      takingAction.move(takingAction.intelligence.move());
       halted = true;
     }
   }

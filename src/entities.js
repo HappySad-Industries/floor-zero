@@ -1,4 +1,4 @@
-/* globals StatBlock, Vector, Spellbook, HitboxCircle, HitboxMulti, creatures */
+/* globals StatBlock, Vector, Spellbook, HitboxCircle, HitboxMulti, BasicIntelligence, creatures */
 
 // Entities
 
@@ -17,6 +17,7 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
     this.name = 'Nameless';
     this.addStats(new StatBlock(20));
     this.addHitbox(new HitboxCircle(20));
+    this.addIntelligence(new BasicIntelligence());
     this.sprite = 'baddie.png';
     this.alignment = 'Neutral';
     this.maxActionTimer = 100;
@@ -56,6 +57,13 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
       new HitboxMulti([this.hitbox, hitbox]).assign(this);
     }
     return this;
+  }
+
+  addIntelligence (intelligence) {
+    if (this.intelligence) {
+      this.intelligence.unassign();
+    }
+    intelligence.assign(this);
   }
 
   moveTo () {
