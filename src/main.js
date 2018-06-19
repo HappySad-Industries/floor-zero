@@ -17,6 +17,7 @@ let takingAction = false;
 let targetMode = false;
 let targetSpell = false;
 let target = false;
+let win = false; // Because it is that kind of game
 
 let halted = false;
 
@@ -204,6 +205,10 @@ function logicUpdate () {
   }
 
   mouseHover();
+
+  if (win && creatures.length === 1 && creatures[0] === player) {
+    window.alert('Congrats! You won! 🤫🤩👌');
+  }
 }
 
 function renderUpdate (sprites, uiSprites) {
