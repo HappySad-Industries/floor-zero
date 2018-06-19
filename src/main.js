@@ -162,20 +162,17 @@ function logicUpdate () {
 
   if (!takingAction && !halted) {
     for (let i in creatures) {
-      creatures[i].actionTimer -= creatures[i].stats.getStat('initiative');
       if (creatures[i].actionTimer <= 0) {
         creatures[i].actionTimer += creatures[i].maxActionTimer;
         takingAction = creatures[i];
         console.log(`It is ${takingAction.name}'s action.`);
         break;
       }
+      creatures[i].actionTimer -= creatures[i].stats.getStat('initiative');
     }
   } else if (!halted) {
     if (takingAction !== player) {
-      let endPosition = new Vector(-20, -20);
-      while (endPosition.x < 0 || endPosition.x > FIELD_WIDTH || endPosition.y < 0 || endPosition.y > FIELD_HEIGHT) {
-        endPosition = Vector.random(takingAction.stats.getStat('movement')).add(takingAction.position);
-      }
+      let endPosition = new Vector(Math.random() * FIELD_WIDTH, Math.random() * FIELD_HEIGHT);
       takingAction.move(endPosition);
       halted = true;
     }
