@@ -196,13 +196,6 @@ function logicUpdate () {
     }
   });
 
-  let arr = creatures.slice();
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i].stats.hp() <= 0) {
-      arr[i].die();
-    }
-  }
-
   mouseHover();
 
   if (win && creatures.length === 1 && creatures[0] === player) {
