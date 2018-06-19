@@ -185,6 +185,7 @@ function logicUpdate () {
     targetMode = false;
     targetSpell = false;
     target = false;
+    takingAction = false;
   }
 
   creatures.map(creature => {
