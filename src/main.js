@@ -20,8 +20,10 @@ let target = false;
 
 let halted = false;
 
-const CANVAS_WIDTH = (13 * 64) + 2; // 834
-const CANVAS_HEIGHT = (448 + 64) + 4; // 516
+const FIELD_WIDTH = (13 * 64);
+const CANVAS_WIDTH = FIELD_WIDTH + 2; // 834
+const FIELD_HEIGHT = 448;
+const CANVAS_HEIGHT = (FIELD_HEIGHT + 64) + 4; // 516
 let fps = 1000;
 let ups = 10;
 
@@ -170,10 +172,15 @@ function logicUpdate () {
         break;
       }
     }
-  } else {
+  } else if (!halted) {
     console.log(`It is ${takingAction.name}'s action.`);
     if (takingAction !== player) {
-      takingAction.move(Vector.random(takingAction.stats.getStat('movement')));
+      let endPosition = new Vector(-20, -20);
+      while (endPosition.x < 0 || endPosition.x > FIELD_WIDTH || endPosition.y < 0 || endPosition.y > FIELD_HEIGHT) {
+        endPosition = Vector.random(takingAction.stats.getStat('movement')).add(takingAction.position);
+      }
+      takingAction.move(endPosition);
+      halted = true;
     }
   }
 

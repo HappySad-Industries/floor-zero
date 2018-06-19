@@ -8,6 +8,10 @@ class Vector { // eslint-disable-line no-unused-vars
 
   // INSTANCE functions
 
+  toString () {
+    return `(${this.x}, ${this.y})`;
+  }
+
   clone () {
     return new Vector(this.x, this.y);
   }
@@ -68,7 +72,7 @@ class Vector { // eslint-disable-line no-unused-vars
   }
 
   static random (mag = 1) {
-    let vect = new Vector(Math.random(), Math.random());
+    let vect = new Vector(Math.random() * 2 - 1, Math.random() * 2 - 1);
     if (mag !== 1) {
       return vect.unit(mag);
     }
