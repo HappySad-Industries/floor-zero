@@ -145,15 +145,13 @@ function initialize () {
 function startGame () {
   creatures = []; // Array of the creatures in the game, including the player
 
-  player = new Player();
-  player.moveTo(200, 200);
+  player = new Player(200, 200);
   player.addStats(new StatBlock(20));
   creatures.push(player);
   player.stats.takeDamage(5);
   player.addSpellbook([new Fireball()]);
-
-  creatures.push(new Enemy().addStats(new StatBlock(5)).moveTo(300, 100));
-  creatures.push(new Creature().addStats(new StatBlock(5)).moveTo(500, 100));
+  new Enemy(500, 100).addStats(new StatBlock(5));
+  new Enemy(300, 100).addStats(new StatBlock(5));
 }
 
 function logicUpdate () {

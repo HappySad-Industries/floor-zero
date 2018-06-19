@@ -12,7 +12,7 @@ class Entity { // eslint-disable-line no-unused-vars
 
 // The creature base class
 class Creature extends Entity { // eslint-disable-line no-unused-vars
-  constructor () {
+  constructor (x, y) {
     super();
     this.name = 'Nameless';
     this.addStats(new StatBlock(20));
@@ -23,6 +23,7 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
     this.actionTimer = this.maxActionTimer;
     this.moveTarget = false;
 
+    this.moveTo(x, y);
     creatures.push(this);
   }
 
@@ -100,8 +101,8 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
 
 // The player class
 class Player extends Creature { // eslint-disable-line no-unused-vars
-  constructor () {
-    super();
+  constructor (x, y) {
+    super(x, y);
     this.name = 'Player';
     this.sprite = 'friend.png';
     this.alignment = 'Ally';
@@ -110,8 +111,8 @@ class Player extends Creature { // eslint-disable-line no-unused-vars
 
 // The enemy class
 class Enemy extends Creature { // eslint-disable-line no-unused-vars
-  constructor () {
-    super();
+  constructor (x, y) {
+    super(x, y);
     this.name = 'Villain';
     this.alignment = 'Enemy';
   }
