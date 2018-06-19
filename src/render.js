@@ -1,4 +1,4 @@
-/* globals CANVAS_HEIGHT, CANVAS_WIDTH, canvas, context, cursor, clicking, debug, Event, Image, creatures, player, moveMode, targetVisual, TargetArrow */
+/* globals CANVAS_HEIGHT, CANVAS_WIDTH, canvas, context, cursor, clicking, debug, Event, Image, creatures, player, moveMode, targetVisual, TargetArrow, renderEffectsArray */
 
 function restoreRenderDefaults () { // eslint-disable-line no-unused-vars
   context.lineWidth = 1;
@@ -167,9 +167,9 @@ function renderUI (sprites) { // eslint-disable-line no-unused-vars
 function renderEffects () { // eslint-disable-line no-unused-vars
   // Render effects and other misc buddies (e.g. tooltips)
 
-  for (let i = 0; i < renderEffects.length; i++) {
-    if (renderEffects[i] instanceof Tooltip) {
-      renderEffects[i].render(cursor.x, cursor.y);
+  for (let i = 0; i < renderEffectsArray.length; i++) {
+    if (renderEffectsArray[i] instanceof Tooltip) {
+      renderEffectsArray[i].render(cursor.x, cursor.y);
     }
   }
   if (moveMode) {

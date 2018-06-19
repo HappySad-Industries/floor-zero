@@ -18,7 +18,7 @@ let targetMode = false;
 let targetSpell = false;
 let target = false;
 let win = false; // Because it is that kind of game
-let renderEffects = []; // An array of effects that will need to be rendered
+let renderEffectsArray = []; // An array of effects that will need to be rendered
 
 let halted = false;
 
