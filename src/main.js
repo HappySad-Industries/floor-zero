@@ -206,6 +206,10 @@ function logicUpdate () {
   }
 
   mouseHover();
+
+  if (creatures.length === 1 && creatures[0] === player) {
+    window.alert('Congrats! You won! 🤫🤩👌');
+  }
 }
 
 function renderUpdate (sprites, uiSprites) {
