@@ -6,7 +6,9 @@ class Spellbook { // eslint-disable-line no-unused-vars
   constructor (list) {
     this.spells = [];
     for (let i in list) {
-      this.spells.push(new Ability(list[i]));
+      let spell = new Ability(list[i]);
+      spell.assign(this);
+      this.spells.push(spell);
     }
   }
 

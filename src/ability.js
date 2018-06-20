@@ -21,8 +21,12 @@ class Ability { // eslint-disable-line no-unused-vars
     }
   }
 
+  assign (spellbook) {
+    this.spellbook = spellbook;
+  }
+
   cast (target) {
-    this.effect(target);
+    this.effect(target, this.spellbook.entity);
   }
 }
 
@@ -34,8 +38,8 @@ let abilityList = { // eslint-disable-line no-unused-vars
       strokeStyle: 'red',
       fillStyle: 'red'
     },
-    effect: (target) => {
-      target.stats.takeDamage(8);
+    effect: (target, caster) => {
+      target.stats.takeDamage(caster.stats.spellPower() * 8);
     }
   }
 };

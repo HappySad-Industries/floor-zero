@@ -30,6 +30,10 @@ class StatBlock { // eslint-disable-line no-unused-vars
           weaponBonus += this.entity.weapon.stats.getStat('AttackDamage');
         }
         return strengthBonus + weaponBonus;
+      },
+      spellPower: () => {
+        let intBonus = Math.pow(this.getStat('Intelligence'), 0.8) / 3;
+        return intBonus;
       }
     };
 
@@ -76,6 +80,10 @@ class StatBlock { // eslint-disable-line no-unused-vars
 
   hp () {
     return this.maxHp() - this.damageTaken;
+  }
+
+  spellPower () {
+    return this.getStat('spellPower');
   }
 
   // booleans
