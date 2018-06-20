@@ -3,10 +3,38 @@ body {
   font-family: cursive;
 }
 
-h1 {
+h1.container {
   font-size: 30pt;
 }
 
-canvas { /* rude linter */
-  color: black;
+.container {
+  position: relative;
+  text-align: center;
+  width: 834px;
+  height: 600px;
+  margin: 0 auto;
+}
+
+#backcanvas {
+  background-image: url(assets/sprites/tile.png);
+  background-repeat: repeat;
+  z-index: 1;
+  color: white;
+  margin-bottom: 1px;
+}
+
+#maincanvas {
+  z-index: 2;
+}
+
+#uicanvas {
+  z-index: 3;
+  color: white;
+}
+
+canvas {
+  /* left: 50%; */
+  bottom: 0;
+  left: 0;
+  position: absolute;
 }
