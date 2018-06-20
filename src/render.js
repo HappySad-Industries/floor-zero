@@ -1,32 +1,29 @@
-/* globals CANVAS_HEIGHT, CANVAS_WIDTH, canvas, context, cursor, clicking, debug, Event, Image, creatures, player, moveMode, targetVisual, TargetArrow, renderEffectsArray */
+/* globals CANVAS_HEIGHT, CANVAS_WIDTH, FIELD_HEIGHT, uiCanvas, canvas, context, cursor, clicking, debug, Image, creatures, player, moveMode, targetVisual, TargetArrow, renderEffectsArray, tooltip */
 
-function restoreRenderDefaults () { // eslint-disable-line no-unused-vars
-  context.lineWidth = 1;
-  context.fillStyle = 'black';
-  context.strokeStyle = 'black';
-  context.font = '12pt Arial';
+function restoreRenderDefaults (ctx = context) { // eslint-disable-line no-unused-vars
+  ctx.lineWidth = 1;
+  ctx.fillStyle = 'black';
+  ctx.strokeStyle = 'black';
+  ctx.font = '12pt Arial';
 }
 
-function render (sprites) { // eslint-disable-line no-unused-vars
+function renderMain (sprites) { // eslint-disable-line no-unused-vars
   if (debug) console.log('Rendering started');
 
-  context.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-
-  let pattern = context.createPattern(sprites.find(sprite => sprite.name === 'tile.png').sprite, 'repeat');
-  context.fillStyle = pattern;
-  context.fillRect(0 + 2, 0 + 2, canvas.width - 4, canvas.height - 64 - 2);
+  context.clearRect(0, 0, canvas.width, canvas.height); // Clear the main canvas
 
   for (let i = 0; i < creatures.length; i++) {
     let creature = creatures[i];
 
+    // Render the creature sprite
     if (sprites.find(sprite => sprite.name === creature.sprite)) {
-      // console.log(`Sprite ${creature.sprite} is loaded`);
       let sprite = sprites.find(sprite => sprite.name === creature.sprite).sprite;
       context.drawImage(sprite, creature.position.x - sprite.width / 2, creature.position.y - sprite.height / 2);
     } else {
       throw new Error(`Sprite ${creature.sprite} isn't loaded!`);
     }
 
+    // If the creature has a hitbox, render it
     if (creature.hitbox) {
       context.translate(creature.hitbox.pos().x, creature.hitbox.pos().y);
       creature.hitbox.render();
@@ -106,7 +103,12 @@ function loadUI () { // eslint-disable-line no-unused-vars
 
 function renderUI (sprites) { // eslint-disable-line no-unused-vars
   if (debug) console.log('UI sprites loaded, rendering UI');
-  const UI_TOP = CANVAS_HEIGHT - 64;
+
+  uiCanvas.context.clearRect(0, 0, uiCanvas.canvas.width, uiCanvas.canvas.height); // Clear the main canvas
+
+  let context = uiCanvas.context;
+
+  const UI_TOP = FIELD_HEIGHT;
   const UI_LEFT = 1;
 
   for (let i = 0; i < 13; i++) {
@@ -167,11 +169,6 @@ function renderUI (sprites) { // eslint-disable-line no-unused-vars
 function renderEffects () { // eslint-disable-line no-unused-vars
   // Render effects and other misc buddies (e.g. tooltips)
 
-  for (let i = 0; i < renderEffectsArray.length; i++) {
-    if (renderEffectsArray[i] instanceof Tooltip) {
-      renderEffectsArray[i].render(cursor.x, cursor.y);
-    }
-  }
   if (moveMode) {
     context.beginPath();
     context.arc(player.position.x, player.position.y, player.stats.getStat('movement'), 0, 2 * Math.PI);
@@ -184,4 +181,7 @@ function renderEffects () { // eslint-disable-line no-unused-vars
   if (targetVisual) {
     targetVisual.render();
   }
+
+  // Render the tooltip
+  if (tooltip) tooltip.render(cursor.x, uiCanvas.context);
 }

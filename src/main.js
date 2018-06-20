@@ -1,4 +1,4 @@
-/* globals Player, Enemy, Event, StatBlock, render, loadSprites, loadUI, renderUI, renderEffects, renderMovement, Vector, TargetArrow */
+/* globals Player, Enemy, Event, StatBlock, renderMain, loadSprites, loadUI, renderUI, renderEffects, renderMovement, Vector, TargetArrow, createUIBar */
 
 // Ability list
 /* globals Fireball */
@@ -18,15 +18,26 @@ let targetMode = false;
 let targetSpell = false;
 let target = false;
 let win = false; // Because it is that kind of game
-let renderEffectsArray = []; // An array of effects that will need to be rendered
+let tooltip = false; // Tooltip to be rendered
+let tooltipHovering = {
+  spot: false, // The UI Spot hovered over
+  time: false, // How long it has been hovered over
+  initial: false // Is this the first tooltip being hovered?
+};
+let ui = []; // Array of the UI buttons
+let uiCanvas = {
+  canvas: false,
+  context: false
+};
 
 let halted = false;
 
-const FIELD_WIDTH = (13 * 64);
-const CANVAS_WIDTH = FIELD_WIDTH + 2; // 834
-const FIELD_HEIGHT = 448;
-const CANVAS_HEIGHT = (FIELD_HEIGHT + 64) + 4; // 516
-let fps = 1000;
+const CANVAS_WIDTH = (13 * 64) + 2; // 834
+const CANVAS_HEIGHT = (448 + 64) + 4; // 516
+const FIELD_WIDTH = CANVAS_WIDTH - 2; // 832
+const FIELD_HEIGHT = CANVAS_HEIGHT - 64; // 448
+
+let fps = 60;
 let ups = 10;
 
 function lookForTargets (spell) { // eslint-disable-line no-unused-vars
@@ -63,6 +74,22 @@ function cancelTargeting () {
 }
 
 function mouseHover () {
+  let uiHovered = false;
+  tooltip = false;
+  // Did we click on a UI element?
+  for (let i = 0; i < ui.length; i++) {
+    if (ui[i].hitbox.isColliding(cursor)) {
+      uiHovered = true;
+      ui[i].hitbox.flags.hovered = true;
+      document.dispatchEvent(new Event(`ui-hover-${ui[i].spot}`));
+    } else {
+      ui[i].hitbox.flags.hovered = false;
+    }
+  }
+
+  if (!uiHovered) tooltipHovering = {spot: false, time: false, initial: false};
+
+  // Did we click on a creature element?
   for (let i = 0; i < creatures.length; i++) {
     if (creatures[i].hitbox.isColliding(cursor)) {
       creatures[i].hitbox.flags.hovered = true;
@@ -70,22 +97,20 @@ function mouseHover () {
       creatures[i].hitbox.flags.hovered = false;
     }
   }
-  const UI_TOP = CANVAS_HEIGHT - 64;
-  const UI_LEFT = 1;
-  for (let i = 0; i < 13; i++) {
-    if (cursor.y > UI_TOP && (cursor.x > UI_LEFT + i * 64 && cursor.x < UI_LEFT + i * 64 + 64)) {
-      if (i !== 0) {
-        console.log(`ui-hover-${i}`);
-        document.dispatchEvent(new Event(`ui-hover-${i}`));
-      } else {
-        console.log(`ui-hover-${i}`);
-        document.dispatchEvent(new Event(`ui-hover-${i}`));
-      }
-    }
-  }
 }
 
 function mouseClick () {
+  // Did we click on a UI element?
+  for (let i = 0; i < ui.length; i++) {
+    if (ui[i].hitbox.isColliding(cursor)) {
+      ui[i].hitbox.flags.hovered = true;
+      document.dispatchEvent(new Event(`ui-click-${ui[i].spot}`));
+    } else {
+      ui[i].hitbox.flags.hovered = false;
+    }
+  }
+
+  // Did we click on a creature?
   for (let i = 0; i < creatures.length; i++) {
     if (creatures[i].hitbox.isColliding(cursor)) {
       if (targetMode) {
@@ -94,19 +119,6 @@ function mouseClick () {
         targetMode = false;
       } else {
         console.log(`Clicking on creature ${creatures[i].name}`);
-      }
-    }
-  }
-  const UI_TOP = CANVAS_HEIGHT - 64;
-  const UI_LEFT = 1;
-  for (let i = 0; i < 13; i++) {
-    if (cursor.y > UI_TOP && (cursor.x > UI_LEFT + i * 64 && cursor.x < UI_LEFT + i * 64 + 64)) {
-      if (i !== 0) {
-        console.log(`ui-click-${i}`);
-        document.dispatchEvent(new Event(`ui-click-${i}`));
-      } else {
-        console.log(`ui-click-${i}`);
-        document.dispatchEvent(new Event(`ui-click-${i}`));
       }
     }
   }
@@ -124,18 +136,17 @@ function executeClick () {
 }
 
 function initialize () {
-  if (debug) {
-    console.log('Initializing game');
-  }
+  if (debug) console.log('Initializing game');
 
-  canvas = document.getElementById('canvas');
+  uiCanvas.canvas = document.querySelector('#uicanvas');
+  uiCanvas.context = uiCanvas.canvas.getContext('2d');
+  canvas = document.querySelector('#maincanvas');
   context = canvas.getContext('2d');
 
+  uiCanvas.canvas.width = CANVAS_WIDTH;
+  uiCanvas.canvas.height = CANVAS_HEIGHT;
   canvas.width = CANVAS_WIDTH;
   canvas.height = CANVAS_HEIGHT;
-
-  let container = document.getElementById('container');
-  container.style.textAlign = 'center';
 
   cursor = new Vector(-50, -50);
   document.addEventListener('mousemove', (e) => {
@@ -160,6 +171,7 @@ function initialize () {
     clicking = false;
   });
 
+  createUIBar();
   restoreRenderDefaults();
 }
 
@@ -226,7 +238,7 @@ function renderUpdate (sprites, uiSprites) {
   let dt = now - lastRenderUpdate;
   lastRenderUpdate = now;
 
-  render(sprites);
+  renderMain(sprites);
   renderUI(uiSprites);
   renderEffects();
   if (takingAction && takingAction.moveTarget) {
@@ -239,12 +251,8 @@ startGame();
 
 loadUI().then((uiSprites) => {
   loadSprites().then((sprites) => {
-    setInterval(renderUpdate, 1000 / fps, sprites, uiSprites);
+    setInterval(renderUpdate, 0, sprites, uiSprites);
   });
 });
 
 setInterval(logicUpdate, 1000 / ups);
-
-console.log(Text.wrapText('All the world\'s a stage, and all the men and women merely players. They have their exits and their entrances; And one man in his time plays many parts.', 200));
-(new Text (Text.wrapText('All the world\'s a stage, and all the men and women merely players. They have their exits and their entrances; And one man in his time plays many parts.', 200))).renderText(100, 100);
-console.log('ugh');
