@@ -136,9 +136,7 @@ function executeClick () {
 }
 
 function initialize () {
-  if (debug) {
-    console.log('Initializing game');
-  }
+  if (debug) console.log('Initializing game');
 
   uiCanvas.canvas = document.querySelector('#uicanvas');
   uiCanvas.context = uiCanvas.canvas.getContext('2d');
