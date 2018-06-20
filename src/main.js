@@ -181,9 +181,9 @@ function startGame () {
   player = new Player(200, 200);
   player.addStats(new StatBlock(20));
   player.stats.takeDamage(5);
-  player.addSpellbook([new Fireball()]);
-  new Enemy(500, 100).addStats(new StatBlock(5));
-  new Enemy(300, 100).addStats(new StatBlock(5));
+  player.addSpellbook(['Fireball']);
+  new Enemy(500, 100).addStats(new StatBlock(30));
+  new Enemy(300, 100).addStats(new StatBlock(30));
 }
 
 function logicUpdate () {

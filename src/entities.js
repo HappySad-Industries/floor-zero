@@ -1,31 +1,11 @@
-/* globals StatBlock, Vector, Spellbook, HitboxCircle, HitboxMulti, BasicIntelligence, creatures */
+/* globals StatBlock, EquipmentSet, Vector, Spellbook, HitboxCircle, HitboxMulti, BasicIntelligence, creatures */
 
 // Entities
 
 // Entity base class, used for anything with physical presence in combat
 class Entity { // eslint-disable-line no-unused-vars
   constructor () {
-    this.position = new Vector(0, 0);
     this.velocity = new Vector(0, 0); // Generally sticks to 0 except for animations (e.g. arrow flying)
-  }
-}
-
-// The creature base class
-class Creature extends Entity { // eslint-disable-line no-unused-vars
-  constructor (x, y) {
-    super();
-    this.name = 'Nameless';
-    this.addStats(new StatBlock(20));
-    this.addHitbox(new HitboxCircle(20));
-    this.addIntelligence(new BasicIntelligence());
-    this.sprite = 'baddie.png';
-    this.alignment = 'Neutral';
-    this.maxActionTimer = 100;
-    this.actionTimer = this.maxActionTimer;
-    this.moveTarget = false;
-
-    this.moveTo(x, y);
-    creatures.push(this);
   }
 
   addStats (stats) {
@@ -34,6 +14,27 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
     }
     stats.assign(this);
     return this;
+  }
+}
+
+// The creature base class
+class Creature extends Entity { // eslint-disable-line no-unused-vars
+  constructor (x, y) {
+    super();
+    this.position = new Vector(0, 0);
+    this.name = 'Nameless';
+    this.addStats(new StatBlock(100));
+    this.addHitbox(new HitboxCircle(20));
+    this.addIntelligence(new BasicIntelligence());
+    this.addEquipment();
+    this.sprite = 'baddie.png';
+    this.alignment = 'Neutral';
+    this.maxActionTimer = 100;
+    this.actionTimer = this.maxActionTimer;
+    this.moveTarget = false;
+
+    this.moveTo(x, y);
+    creatures.push(this);
   }
 
   addSpellbook (spells) {
@@ -59,6 +60,19 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
     return this;
   }
 
+  addEquipment (equipment) {
+    if (this.equipment) {
+      this.equipment.unassign();
+    }
+    let equip;
+    if (equipment) {
+      equip = equipment;
+    } else {
+      equip = new EquipmentSet();
+    }
+    equip.assign(this);
+  }
+
   addIntelligence (intelligence) {
     if (this.intelligence) {
       this.intelligence.unassign();
@@ -70,7 +84,7 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
     if (arguments.length === 1) {
       // Only one argument is specified, an object {x: x, y: y}
       // e.g. `creature.moveTo({x: 10, y: 50})`
-      this.position = arguments[0];
+      this.position = arguments[0].clone();
     } else {
       // Two arguments specified, an x and a y
       // e.g. `creature.moveTo(10, 50)`
@@ -78,6 +92,10 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
     }
     this.moveTarget = false;
     return this;
+  }
+
+  attack (target) {
+    target.stats.takeDamage(this.stats.getStat('AttackDamage'));
   }
 
   die () {

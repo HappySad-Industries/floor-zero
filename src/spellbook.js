@@ -1,8 +1,13 @@
+/* globals Ability */
+
 // Spellbook class
 
 class Spellbook { // eslint-disable-line no-unused-vars
   constructor (list) {
-    this.spells = list.slice();
+    this.spells = [];
+    for (let i in list) {
+      this.spells.push(new Ability(list[i]));
+    }
   }
 
   assign (entity) {
