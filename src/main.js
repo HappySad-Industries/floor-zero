@@ -161,8 +161,10 @@ function initialize () {
     }
   });
   document.addEventListener('contextmenu', (event) => {
-    event.preventDefault();
-    cancelTargeting();
+    if (cursor.x > 0 && cursor.x < CANVAS_WIDTH && cursor.y > 0 && cursor.y < CANVAS_HEIGHT) {
+      event.preventDefault();
+      cancelTargeting();
+    }
   });
   document.addEventListener('mousedown', () => {
     clicking = true;
