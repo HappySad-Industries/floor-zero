@@ -57,8 +57,12 @@ function lookForTargets (spell) { // eslint-disable-line no-unused-vars
     }
     console.log('targetVisual true');
 
-    targetMode = true;
-    targetSpell = spell;
+    if (!moveMode) {
+      targetMode = true;
+      targetSpell = spell;
+    } else {
+      cancelTargeting();
+    }
   }
 }
 

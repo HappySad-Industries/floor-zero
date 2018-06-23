@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars, no-global-assign */
-/* globals cursor, moveMode, player, targetVisual, takingAction, lookForTargets, Tooltip, tooltipHovering, tooltip, HitboxRect, ui, Vector, FIELD_HEIGHT */
+/* globals cursor, moveMode, targetMode, player, targetVisual, takingAction, lookForTargets, Tooltip, tooltipHovering, tooltip, HitboxRect, ui, Vector, FIELD_HEIGHT */
 
 class UIElement {
   constructor (spot, x, y, width, height, offset) {
@@ -53,7 +53,11 @@ function createUIBar () {
       targetVisual = false;
       player.cancelMove();
     } else if (takingAction === player) {
-      moveMode = true;
+      if (!targetMode) {
+        moveMode = true;
+      } else {
+        cancelTargeting();
+      }
     }
   };
 
