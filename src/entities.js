@@ -94,10 +94,6 @@ class Creature extends Entity { // eslint-disable-line no-unused-vars
     return this;
   }
 
-  attack (target) {
-    target.stats.takeDamage(this.stats.getStat('AttackDamage'));
-  }
-
   die () {
     console.log(`Creature ${this.name} is ded 💀☠️👻`);
     let index = creatures.indexOf(this);

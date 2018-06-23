@@ -25,6 +25,10 @@ class Ability { // eslint-disable-line no-unused-vars
     this.spellbook = spellbook;
   }
 
+  unassign () {
+    this.spellbook = undefined;
+  }
+
   cast (target) {
     this.effect(target, this.spellbook.entity);
   }
@@ -32,6 +36,13 @@ class Ability { // eslint-disable-line no-unused-vars
 
 // Stored ability information
 let abilityList = { // eslint-disable-line no-unused-vars
+  BasicAttack: {
+    name: 'Basic Attack',
+    targetType: 'arrow',
+    effect: (target, caster) => {
+      target.stats.takeDamage(caster.stats.getStat('AttackDamage'));
+    }
+  },
   Fireball: {
     targetType: 'arrow',
     style: {

@@ -3,12 +3,13 @@
 // Spellbook class
 
 class Spellbook { // eslint-disable-line no-unused-vars
-  constructor (list) {
+  constructor (list, excludeAttack = false) {
     this.spells = [];
+    if (!excludeAttack) {
+      this.addSpell(new Ability('BasicAttack'));
+    }
     for (let i in list) {
-      let spell = new Ability(list[i]);
-      spell.assign(this);
-      this.spells.push(spell);
+      this.addSpell(new Ability(list[i]));
     }
   }
 
@@ -20,6 +21,19 @@ class Spellbook { // eslint-disable-line no-unused-vars
   unassign () {
     this.entity.spellbook = undefined;
     this.entity = undefined;
+  }
+
+  addSpell (spell) {
+    spell.assign(this);
+    this.spells.push(spell);
+  }
+
+  removeSpell (spell) {
+    let idx = this.spells.indexOf(spell);
+    if (idx > -1) {
+      spell.unassign();
+      this.spells.splice(idx, 1);
+    }
   }
 
   getSpell (name) {
