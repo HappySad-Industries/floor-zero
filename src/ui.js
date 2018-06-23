@@ -62,6 +62,9 @@ function createUIBar () {
   };
 
   ui[1].clicked = () => {
+    lookForTargets(player.spellbook.getSpell('Basic Attack'));
+  };
+  ui[2].clicked = () => {
     lookForTargets(player.spellbook.getSpell('Fireball'));
   };
 

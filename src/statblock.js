@@ -26,9 +26,6 @@ class StatBlock { // eslint-disable-line no-unused-vars
       attackDamage: () => {
         let strengthBonus = Math.pow(this.getStat('Strength'), 0.8) * 2;
         let weaponBonus = 0;
-        if (this.entity.weapon) {
-          weaponBonus += this.entity.weapon.stats.getStat('AttackDamage');
-        }
         return strengthBonus + weaponBonus;
       },
       spellPower: () => {
@@ -66,6 +63,9 @@ class StatBlock { // eslint-disable-line no-unused-vars
     }
     if (this.statCalculators[lower]) {
       value += this.statCalculators[lower]();
+    }
+    if (this.entity.equipment && !(this.entity instanceof Item)) {
+      value += this.entity.equipment.getStat(lower);
     }
     return Math.round(value);
   }

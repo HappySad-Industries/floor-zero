@@ -14,14 +14,24 @@ class Item extends Entity { // eslint-disable-line no-unused-vars
   unequip () {
     this.creature.equipment.removeItem(this);
   }
+
+  static GetRandom () {
+    let item = new Item();
+    let stats = ['Agility', 'Strength', 'Intelligence'];
+    for (let i in stats) {
+      item.stats[`base${stats[i]}`] = Math.round(Math.random() * 10);
+    }
+    return item;
+  }
 }
 
 class EquipmentSet { // eslint-disable-line no-unused-vars
   constructor (items) {
     this.items = [];
     for (let i in items) {
-      this.items.push(items[i]);
+      this.addItem(items[i]);
     }
+    this.addItem(Item.GetRandom());
   }
 
   assign (creature) {
@@ -37,7 +47,7 @@ class EquipmentSet { // eslint-disable-line no-unused-vars
   addItem (item) {
     this.items.push(item);
     item.equipment = this;
-    console.log(`${this.creature.name} equipped ${item.name}.`);
+    console.log(`${this.creature ? this.creature.name : 'No one'} equipped ${item.name}.`);
   }
 
   removeItem (item) {
